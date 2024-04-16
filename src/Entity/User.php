@@ -62,6 +62,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $phonenumber = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $is_banned = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -220,5 +223,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function isBanned(): ?bool
+    {
+        return $this->is_banned;
+    }
+
+    public function setBanned(?bool $is_banned): static
+    {
+        $this->is_banned = $is_banned;
+
+        return $this;
+    }
+    
 
 }
