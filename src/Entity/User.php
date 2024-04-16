@@ -65,11 +65,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $phonenumber = null;
 
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $is_banned = null;
+
     /**
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $reservations;
+
 
     public function getId(): ?int
     {
@@ -230,6 +235,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    public function isBanned(): ?bool
+    {
+        return $this->is_banned;
+    }
+
+    public function setBanned(?bool $is_banned): static
+    {
+        $this->is_banned = $is_banned;
+
+        return $this;
+    }
+    
+
     /**
      * @return Collection<int, Reservation>
      */
@@ -259,5 +278,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 
 }
