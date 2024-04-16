@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SalleController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+	<div class="container">
+			
+			<div class="row">
+               
+                    {% for salle in salles %}
+                        <div class="col-6">
+                            <div class="card  bg-dark text-light mt-3 p-4">
+                                <div class="card-body">
+                                    <h2 class='card-title text-center'>{{ salle.nom }}</h2>
+                                    <p class='card-text text-center'>Capacité : {{ salle.capacite }}</p>
+                                 <p class='card-text text-center'>Equipements disponibles : 
+                                    {% for equip in salle.equipement %}
+                                     {{  equip.getNom() }} 
+                                {% endfor %}
+                                </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                
+                    {% endfor %}
+               
+            </div>
+
+
+	</div>
+
+{% endblock %}
