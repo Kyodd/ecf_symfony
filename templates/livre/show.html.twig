@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Livre{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Détails du Livre</h1>
+
+    <div>
+        <h2>{{ livre.nom }}</h2>
+        <p><strong>Auteur:</strong> {{ livre.auteur }}</p>
+        <p><strong>Année de Publication:</strong> {{ livre.anneePublication }}</p>
+        <p><strong>Résumé:</strong> {{ livre.resume }}</p>
+        <p><strong>Disponibilité:</strong> {% if livre.disponibilite %}Disponible{% else %}Non disponible{% endif %}</p>
+        <p><strong>Note:</strong> {{ livre.note }}</p>
+        <p><strong>État:</strong> {{ livre.etat.libelle }}</p>
+        <img src="{{ livre.image }}" alt="Image du Livre">
+        <!-- Ajoutez d'autres détails du livre si nécessaire -->
+    </div>
+</div>
+{% endblock %}
