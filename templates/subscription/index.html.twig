@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Subscription index{% endblock %}
+
+{% block body %}
+    <h1>Hello SubscriptionController!</h1>
+
+    {% for Abonnement in typeRepo %}
+
+        <p>
+            {{ Abonnement.id }} - {{ Abonnement.name }}
+        </p>
+
+    {% endfor %}
+
+{% endblock %}

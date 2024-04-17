@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
         $Kyodd = new User();
         $Kyodd->setEmail('kyodd@landeraus.fr');
         $Kyodd->setRoles(['ROLE_ADMIN']);
-        $Kyodd->setPassword($this->userPasswordHasherInterface->hashPassword($Kyodd, 'jaimelabite'));
+        $Kyodd->setPassword($this->userPasswordHasherInterface->hashPassword($Kyodd, 'kyodd'));
 
         $Kyodd->setNom('Kyodd');
         $Kyodd->setPrenom('Kyodd');

@@ -15,11 +15,14 @@ class SalleController extends AbstractController
     #[Route('/salle', name: 'app_salle')]
     public function index(SalleRepository  $salleRepo, EquipementRepository $equiRepo ): Response
     {
+
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+        
         $salles = $salleRepo ->findAll();
         $equip = $equiRepo ->findAll();
-
-    
-
+        
         return $this->render('salle/index.html.twig', [
             'salles' => $salles,
         ]);
