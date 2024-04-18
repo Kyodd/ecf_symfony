@@ -21,6 +21,7 @@
                                     {% for equip in salle.equipement %}
                                      {{  equip.getNom() }} 
                                 {% endfor %}
+                                  <a href="{{ path('app_salle_reservation', { id:salle.id }) }}">Voir les créneaux</a>
                                 </p>
 
                                 </div>

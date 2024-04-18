@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #calendrier{
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div id="calendrier">
+    </div>
+     <form id="event-form" method="post" action="{{ path('save_event') }}">
+    <input type="hidden" id="event-data" name="event-data" value="">
+    <button type="submit">Enregistrer l'événement</button>
+</form>
+
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendrier');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'timeGridWeek',
+    locale: 'fr',
+    timeZone: 'Europe/Paris',
+    slotMinTime: "08:00:00",
+    slotMaxTime: "19:00:00",
+    weekends: false,
+    slotDuration: '01:00:00' ,
+    allDaySlot:false,
+    height:'380px',
+    headerToolbar: {
+       start: 'prev,next today',
+                center: 'addEventButton',
+                end: 'timeGridWeek'
+
+    },
+    events: {{ data|raw }},
+    selectable: true,
+    select: function(arg) {
+            calendar.addEvent({
+                start: arg.start,
+                end: arg.end,
+                backgroundColor: arg.backgroundColor,
+                borderColor: arg.borderColor,
+                textColor: arg.textColor,
+            })
+    }
+
+  });
+
+  calendar.render();
+   var eventForm = document.getElementById('event-form');
+    var eventDataInput = document.getElementById('event-data');
+
+    calendar.on('select', function(info) {
+            var event = {
+                start: info.start.toISOString(),
+                end: info.end.toISOString(),
+                // Ajoutez d'autres propriétés si nécessaire
+            };
+
+            eventDataInput.value = JSON.stringify(event);
+          
+            eventForm.submit();
+
+    });
+
+});
+
+</script>
+
+{% endblock %}
+{% endblock %}
