@@ -28,6 +28,15 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private ?Salle $salle = null;
 
+    #[ORM\Column(length: 7)]
+    private ?string $background_color = null;
+
+    #[ORM\Column(length: 7)]
+    private ?string $border_color = null;
+
+    #[ORM\Column(length: 7)]
+    private ?string $text_color = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +86,42 @@ class Reservation
     public function setSalle(?Salle $salle): static
     {
         $this->salle = $salle;
+
+        return $this;
+    }
+
+    public function getBackgroundColor(): ?string
+    {
+        return $this->background_color;
+    }
+
+    public function setBackgroundColor(string $background_color): static
+    {
+        $this->background_color = $background_color;
+
+        return $this;
+    }
+
+    public function getBorderColor(): ?string
+    {
+        return $this->border_color;
+    }
+
+    public function setBorderColor(string $border_color): static
+    {
+        $this->border_color = $border_color;
+
+        return $this;
+    }
+
+    public function getTextColor(): ?string
+    {
+        return $this->text_color;
+    }
+
+    public function setTextColor(string $text_color): static
+    {
+        $this->text_color = $text_color;
 
         return $this;
     }
