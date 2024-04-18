@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\LivreRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
@@ -17,7 +18,7 @@ class Livre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'Le titre ne peut pas être vide.') ]
+    // #[Assert\NotBlank(message:'Le titre ne peut pas être vide.') ]
     private ?string $Nom = null;
 
     #[ORM\Column(length: 255)]
@@ -26,7 +27,7 @@ class Livre
     #[ORM\Column(nullable: true)]
     private ?int $anneePublication = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $Resume = null;
 
     #[ORM\Column(length: 255, nullable: true)]
