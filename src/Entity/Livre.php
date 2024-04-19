@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\LivreRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
@@ -42,16 +43,20 @@ class Livre
     #[ORM\JoinColumn(nullable: true)]
     private ?Etat $etat = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeInterface $dateRendu = null;
+    
+
     /**
      * @var Collection<int, Prets>
      */
     #[ORM\OneToMany(targetEntity: Prets::class, mappedBy: 'livre')]
-    private Collection $Pret;
+    private Collection $prets;
 
    
     public function __construct()
     {
-        $this->Pret = new ArrayCollection();
+        $this->prets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,9 +151,9 @@ class Livre
     /**
      * @return Collection<int, Prets>
      */
-    public function getPret(): Collection
+    public function getPrets(): Collection
     {
-        return $this->Pret;
+        return $this->prets;
     }
 
     public function addPret(Prets $pret): static
@@ -181,6 +186,17 @@ class Livre
     public function setNom(string $Nom): static
     {
         $this->Nom = $Nom;
+
+        return $this;
+    }
+    public function getDateRendu(): ?\DateTimeInterface
+    {
+        return $this->dateRendu;
+    }
+
+    public function setDateRendu(?DateTimeInterface $dateRendu): self
+    {
+        $this->dateRendu = $dateRendu;
 
         return $this;
     }

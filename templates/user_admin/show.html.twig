@@ -1,61 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Liste des Livres{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+<div class="container">
+    <h1>Liste des Livres</h1>
 
     <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Disponibilité</th>
+                <th>Date de début</th>
+                <th>Date de Restitution Prévue</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ user.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ user.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Birthdate</th>
-                <td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ user.adresse }}</td>
-            </tr>
-            <tr>
-                <th>Codepostal</th>
-                <td>{{ user.codepostal }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ user.ville }}</td>
-            </tr>
-            <tr>
-                <th>Phonenumber</th>
-                <td>{{ user.phonenumber }}</td>
-            </tr>
+            {% for livre in livres %}
+                <tr>
+                    <td><img src="{{ livre.image }}" alt="Image du livre" style="width: 100px;"></td>
+                    <td>{{ livre.titre }}</td>
+                    <td>
+                        {% if livre.disponibilite %}
+                            Disponible
+                        {% else %}
+                            Emprunté
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if livre.dateDebut %}
+                            {{ livre.dateDebut|date('d/m/Y') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if livre.dateRendu %}
+                            {{ livre.dateRendu|date('d/m/Y') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not livre.disponibilite %}
+                            {% if livre.dateRendu < "now"|date %}
+                                <span style="color: red;">En retard</span>
+                            {% endif %}
+                            <form action="{{ path('restitution', {'id': livre.id}) }}" method="post">
+                                <button type="submit" class="btn btn-primary">Enregistrer la restitution</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_user_admin_index') }}">back to list</a>
-
-    <a href="{{ path('app_user_admin_edit', {'id': user.id}) }}">edit</a>
-
+</div>
 {% endblock %}

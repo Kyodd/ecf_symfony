@@ -20,6 +20,21 @@ class LivreRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Livre::class);
     }
+/**
+     * @param Livre $livre
+     * @return array
+     */
+    public function findPretsByLivre(Livre $livre): array
+    {
+        return $this->createQueryBuilder('l')
+            ->join('l.prets', 'p')
+            ->where('l.id = :livreId')
+            ->setParameter('livreId', $livre->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     //    /**
     //     * @return Livre[] Returns an array of Livre objects

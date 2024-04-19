@@ -15,18 +15,25 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            {% for livre in livres %}
-                <tr>
-                    <td>{{ livre.nom }}</td>
-                    <td>{{ livre.auteur }}</td>
-                    <td>{{ livre.anneePublication }}</td>
-                    <td>
-                        <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="btn btn-primary">Voir</a>
-                        <!-- Ajoutez d'autres actions si nécessaire -->
-                    </td>
-                </tr>
-            {% endfor %}
+        <tbody>{% for livre in livres %}
+    <tr>
+        <td>{{ livre.nom }}</td>
+        <td>{{ livre.auteur }}</td>
+        <td>{{ livre.anneePublication }}</td>
+        <td>
+        {% set pretEnCours= pret[livre.id] ?? NULL %}
+            {% if not pretEnCours %}
+                <a href="{{ path('reservation', {'id': livre.id}) }}" class="btn btn-success">Réserver</a>
+            {% else %}
+           
+                <span>Livre déjà réservé, disponible à partir du {{ pretEnCours.dateFin|date('d/m/Y') }}</span>
+               
+            {% endif %}
+            <a href="{{ path('app_livre_show', {'id': livre.id}) }}" class="btn btn-primary">Voir</a>
+        </td>
+    </tr>
+{% endfor %}
+
         </tbody>
     </table>
 </div>
