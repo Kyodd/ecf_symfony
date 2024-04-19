@@ -18,6 +18,10 @@ class LivreController extends AbstractController
     #[Route('/livres', name: 'app_livre')]
     public function index(LivreRepository $livreRepository, PretsRepository $pretRepos): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $livres = $livreRepository->findAll(); // Récupérer tous les livres
         $pretsEnCours= $pretRepos->findPrets();
        

@@ -20,9 +20,9 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $Kyodd = new User();
-        $Kyodd->setEmail('kyodd@landeraus.fr');
+        $Kyodd->setEmail('admind@admin.fr');
         $Kyodd->setRoles(['ROLE_ADMIN']);
-        $Kyodd->setPassword($this->userPasswordHasherInterface->hashPassword($Kyodd, 'jaimelabite'));
+        $Kyodd->setPassword($this->userPasswordHasherInterface->hashPassword($Kyodd, 'admin'));
 
         $Kyodd->setNom('Kyodd');
         $Kyodd->setPrenom('Kyodd');

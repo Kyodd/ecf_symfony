@@ -1,39 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BanController!{% endblock %}
+{% block title %}Hello BanController!
+{% endblock %}
 
 {% block body %}
 
-    <h1>Utilisateurs bannis</h1>
+	<h1>Utilisateurs bannis</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
+	<a href="{{ path ('app_user_admin_index')}}" class="btn btn-primary mb-3">Liste des Utilisateurs</a>
 
-    {% for users in banList %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Email</th>
+				<th>Nom</th>
+				<th>Prenom</th>
+				<th>Action</th>
+			</tr>
+		</thead>
 
-        <table>
-            <tbody>
-                <tr>
-                    <td>{{ users.id }}</td>
-                    <td>{{ users.email }}</td>
-                    <td>{{ users.nom }}</td>
-                    <td>{{ users.prenom }}</td>
-                    <td>
-                        <a href="{{ path('app_unBan_user', {'id': users.id}) }}" onclick = "return confirm ('Vous allez débannir {{users.nom}} {{users.prenom}}. Etes en êtes-vous sûr?')" class='btn btn-success'>Débannir</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+		<tbody>
+			{% for users in banList %}
 
-    {% endfor %}
+
+				<tr>
+					<td>{{ users.id }}</td>
+					<td>{{ users.email }}</td>
+					<td>{{ users.nom }}</td>
+					<td>{{ users.prenom }}</td>
+					<td>
+						<a href="{{ path('app_unBan_user', {'id': users.id}) }}" onclick="return confirm ('Vous allez débannir {{users.nom}} {{users.prenom}}. Etes en êtes-vous sûr?')" class='btn btn-success'>Débannir</a>
+					</td>
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
 
 {% endblock %}
