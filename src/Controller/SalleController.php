@@ -25,61 +25,64 @@ class SalleController extends AbstractController
 
         if (!$this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
+        }else if($this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }else{
+            $salles = $salleRepo ->findAll();
+            $equip = $equiRepo ->findAll();
+            
+            return $this->render('salle/index.html.twig', [
+                'salles' => $salles,
+            ]);
         }
         
-        $salles = $salleRepo ->findAll();
-        $equip = $equiRepo ->findAll();
-        
-        return $this->render('salle/index.html.twig', [
-            'salles' => $salles,
-        ]);
+       
     }
 
     #[ROUTE('/salle/{id}', name:'app_salle_reservation', methods: ['GET','POST'])]
     public function reservation($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
     {    
-     
-        $events = $calendar->findAll();
-
-        // $idSalle= $id;
-   
-        // $salle = $salle->find($idSalle);
-      
-        $rdvs = [];
-      
-      
-        foreach($events as $event){
-         
-        if($event->getUser()->getId()==$this->getUser()->getId()){
-            $colorBg  = 'blue';
-            $title  = 'Votre réservation';
-        }else{
-            $colorBg  = 'red';
-            $title  = 'Indisponible';
-        }
-            if($event->getSalle()->getId() ==$id ){
-                $rdvs[] = [
-                    'id' => $event->getId(),
-                    'idSalle'=>$id,
-                    'title'=>$title,
-                    'start' => $event->getDateDebut()->format('Y-m-d H:i:s'),
-                    'end' => $event->getDateFin()->format('Y-m-d H:i:s'),                   
-                    'backgroundColor' =>  $colorBg,
-                    'borderColor' => $colorBg,
-                    'textColor' => $event->getTextColor(),
-                  
-                ];
+        if ($this->isGranted('ROLE_USER')) {
+            $events = $calendar->findAll();
+            $rdvs = [];
+          
+          
+            foreach($events as $event){
+             
+            if($event->getUser()->getId()==$this->getUser()->getId()){
+                $colorBg  = 'blue';
+                $title  = 'Votre réservation';
+            }else{
+                $colorBg  = 'red';
+                $title  = 'Indisponible';
             }
-        } 
-
-        $data = json_encode($rdvs);
-
-        return $this->render('salle/reservation.html.twig', 
-        [
-            'data' => $data,
-            'id'=> $id,
-        ]
-        );
+                if($event->getSalle()->getId() ==$id ){
+                    $rdvs[] = [
+                        'id' => $event->getId(),
+                        'idSalle'=>$id,
+                        'title'=>$title,
+                        'start' => $event->getDateDebut()->format('Y-m-d H:i:s'),
+                        'end' => $event->getDateFin()->format('Y-m-d H:i:s'),                   
+                        'backgroundColor' =>  $colorBg,
+                        'borderColor' => $colorBg,
+                        'textColor' => $event->getTextColor(),
+                      
+                    ];
+                }
+            } 
+    
+            $data = json_encode($rdvs);
+    
+            return $this->render('salle/reservation.html.twig', 
+            [
+                'data' => $data,
+                'id'=> $id,
+            ]
+            );
+        }else {
+            return $this->redirectToRoute('app_home');
+        }
+       
     }
 
     #[ROUTE('/save-event/{id}', name:'save_event',methods: ['POST'])]
@@ -115,30 +118,6 @@ class SalleController extends AbstractController
          
         ];
    
-   }else{
-   
-  
-   
-    
-    $user = $this->getUser();
-    
-
-
-    $reservation = new Reservation();
-    $reservation->setUser($user);
-    $reservation->setSalle($salle );
-    $reservation->setDateDebut(new \DateTime($event['start']));
-    $reservation->setDateFin(new \DateTime($event['end']));
-   
-    $reservation->setBackgroundColor('red');
-    $reservation->setBorderColor('red');
-    $reservation->setTextColor('white');
-
-
- 
-
-
-
    }
    
 }
@@ -171,6 +150,16 @@ class SalleController extends AbstractController
             
          
         }else{
+            $user = $this->getUser();
+            $reservation = new Reservation();
+            $reservation->setUser($user);
+            $reservation->setSalle($salle );
+            $reservation->setDateDebut(new \DateTime($event['start']));
+            $reservation->setDateFin(new \DateTime($event['end']));
+           
+            $reservation->setBackgroundColor('red');
+            $reservation->setBorderColor('red');
+            $reservation->setTextColor('white');
                $entityManager->persist($reservation);
              $entityManager->flush();
            
