@@ -317,7 +317,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($pret->getUser() === $this) {
                 $pret->setUser(null);
             }
-        }
+        }}
 
     public function getSubscription(): ?Subscription
     {
