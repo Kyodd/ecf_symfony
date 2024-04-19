@@ -19,15 +19,18 @@ class AdminSalleController extends AbstractController
 {
     #[Route('/', name: 'app_admin_salle_index', methods: ['GET'])]
     public function index(SalleRepository $salleRepository): Response
-    {
+    {    if ($this->isGranted('ROLE_ADMIN')) {
         return $this->render('admin_salle/index.html.twig', [
             'salles' => $salleRepository->findAll(),
-        ]);
+        ]);}
+        else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[Route('/new', name: 'app_admin_salle_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    {  if ($this->isGranted('ROLE_ADMIN')) {
         $salle = new Salle();
         $form = $this->createForm(SalleType::class, $salle);
         $form->handleRequest($request);
@@ -42,20 +45,26 @@ class AdminSalleController extends AbstractController
         return $this->render('admin_salle/new.html.twig', [
             'salle' => $salle,
             'form' => $form,
-        ]);
+        ]);}
+        else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[Route('/{id}', name: 'app_admin_salle_show', methods: ['GET'])]
     public function show(Salle $salle): Response
-    {
+    {  if ($this->isGranted('ROLE_ADMIN')) {
         return $this->render('admin_salle/show.html.twig', [
             'salle' => $salle,
-        ]);
+        ]);}
+        else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[Route('/{id}/edit', name: 'app_admin_salle_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
-    {
+    {   if ($this->isGranted('ROLE_ADMIN')) {
         $form = $this->createForm(SalleType::class, $salle);
         $form->handleRequest($request);
 
@@ -68,18 +77,24 @@ class AdminSalleController extends AbstractController
         return $this->render('admin_salle/edit.html.twig', [
             'salle' => $salle,
             'form' => $form,
-        ]);
+        ]);}
+        else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[Route('/{id}', name: 'app_admin_salle_delete', methods: ['POST'])]
     public function delete(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
-    {
+    { if ($this->isGranted('ROLE_ADMIN')) {
         if ($this->isCsrfTokenValid('delete'.$salle->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($salle);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_salle_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_admin_salle_index', [], Response::HTTP_SEE_OTHER);}
+        else{
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[ROUTE('/{id}/disponibilites', name:'app_admin_salle_disponibilites', methods: ['GET','POST'])]
