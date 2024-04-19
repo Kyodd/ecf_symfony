@@ -1,3 +1,8 @@
 body {
     background-color: skyblue;
 }
+
+.btn{
+    display:flex;
+    width:fit-content;
+}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #calendrier{
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div id="calendrier">
+    </div>
+</div>
+</div>
+</form>
+
+
+{% block javascripts %}
+<script>
+
+ 
+    document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendrier');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'timeGridWeek',
+    locale: 'fr',
+    timeZone: 'Europe/Paris',
+    slotMinTime: "08:00:00",
+    slotMaxTime: "19:00:00",
+    weekends: false,
+    slotDuration: '01:00:00' ,
+    allDaySlot:false,
+    height:'380px',
+    headerToolbar: {
+       start: 'prev,next today',
+        end: 'timeGridWeek'
+
+    },
+    events: {{ data|raw }},
+    selectable: false,
+
+  });
+
+  calendar.render();
+
+});
+
+</script>
+
+{% endblock %}
+{% endblock %}
