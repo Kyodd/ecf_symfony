@@ -162,8 +162,8 @@ class Livre
 
     public function addPret(Prets $pret): static
     {
-        if (!$this->Pret->contains($pret)) {
-            $this->Pret->add($pret);
+        if (!$this->prets->contains($pret)) {
+            $this->prets->add($pret);
             $pret->setLivre($this);
         }
 
@@ -172,7 +172,7 @@ class Livre
 
     public function removePret(Prets $pret): static
     {
-        if ($this->Pret->removeElement($pret)) {
+        if ($this->prets->removeElement($pret)) {
             // set the owning side to null (unless already changed)
             if ($pret->getLivre() === $this) {
                 $pret->setLivre(null);
@@ -193,7 +193,7 @@ class Livre
 
         return $this;
     }
-    public function getDateRendu(): ?\DateTimeInterface
+    public function getDateRendu(): ?DateTimeInterface
     {
         return $this->dateRendu;
     }
