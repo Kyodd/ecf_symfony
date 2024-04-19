@@ -22,6 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roles = ['ROLE_USER'];
         $this->reservations = new ArrayCollection();
+        $this->prets = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -75,8 +76,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $reservations;
 
+
+    /**
+     * @var Collection<int, Prets>
+     */
+    #[ORM\OneToMany(targetEntity: Prets::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $prets;
+
     #[ORM\ManyToOne(inversedBy: 'user')]
     private ?Subscription $subscription = null;
+
 
 
     public function getId(): ?int
@@ -282,6 +291,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    /**
+     * @return Collection<int, Prets>
+     */
+    public function getPrets(): Collection
+    {
+        return $this->prets;
+    }
+
+    public function addPret(Prets $pret): static
+    {
+        if (!$this->prets->contains($pret)) {
+            $this->prets->add($pret);
+            $pret->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePret(Prets $pret): static
+    {
+        if ($this->prets->removeElement($pret)) {
+            // set the owning side to null (unless already changed)
+            if ($pret->getUser() === $this) {
+                $pret->setUser(null);
+            }
+        }
+
     public function getSubscription(): ?Subscription
     {
         return $this->subscription;
@@ -290,6 +327,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSubscription(?Subscription $subscription): static
     {
         $this->subscription = $subscription;
+
 
         return $this;
     }

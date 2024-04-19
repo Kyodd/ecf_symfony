@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\PretsRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PretsRepository;
 
 #[ORM\Entity(repositoryClass: PretsRepository::class)]
 class Prets
@@ -13,56 +15,60 @@ class Prets
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $dateDebut = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\Column]
-    private ?int $dateFin = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateDebut = null;
 
-    #[ORM\Column]
-    private ?int $dateRendu = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable : true)]
+    private ?DateTimeInterface $dateRendu = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $extension = null;
+    #[ORM\Column(type:"boolean", nullable: true)]
+    private ?bool $extension = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Pret')]
+    #[ORM\ManyToOne(inversedBy: 'prets')]
     private ?Livre $livre = null;
+
+    #[ORM\ManyToOne(inversedBy: 'prets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDateDebut(): ?int
-    {
-        return $this->dateDebut;
-    }
-
-    public function setDateDebut(int $dateDebut): static
-    {
-        $this->dateDebut = $dateDebut;
-
-        return $this;
-    }
-
-    public function getDateFin(): ?int
+    public function getDateFin(): ?\DateTimeInterface
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(int $dateFin): static
+    public function setDateFin(\DateTimeInterface $dateFin): static
     {
         $this->dateFin = $dateFin;
 
         return $this;
     }
 
-    public function getDateRendu(): ?int
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): static
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateRendu():?DateTimeInterface
     {
         return $this->dateRendu;
     }
 
-    public function setDateRendu(int $dateRendu): static
+    public function setDateRendu(\DateTimeInterface $dateRendu): static
     {
         $this->dateRendu = $dateRendu;
 
@@ -89,6 +95,18 @@ class Prets
     public function setLivre(?Livre $livre): static
     {
         $this->livre = $livre;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

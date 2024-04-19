@@ -20,6 +20,20 @@ class PretsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Prets::class);
     }
+    public function findPrets(): array
+    {
+        $query= $this->createQueryBuilder("p")
+        ->where("p.dateRendu IS NULL")
+        ->getQuery();
+
+        $prets= $query->getResult();
+        $pretsEnCours= [];
+        foreach ($prets as $pret){
+            $pretsEnCours[$pret->getLivre()->getId()]=$pret;
+        }
+        return $pretsEnCours;
+
+    }
 
     //    /**
     //     * @return Prets[] Returns an array of Prets objects
