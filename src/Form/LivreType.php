@@ -14,16 +14,17 @@ class LivreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('Nom')
             ->add('Auteur')
             ->add('anneePublication')
             ->add('Resume')
             ->add('image')
             ->add('Disponibilite')
             ->add('note')
+            ->add('dateRendu')
             ->add('etat', EntityType::class, [
                 'class' => Etat::class,
-                'choice_label' => 'nom',
-                'expande' => true,
+                'choice_label' => 'id',
             ])
         ;
     }

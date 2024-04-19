@@ -1,31 +1,39 @@
-{% for livre in livres %}
-    {% if livre.disponibilite %}
-        {# Le livre est disponible #}
-    {% else %}
-        {% set prets = livre.getPrets() %}
-        {% for pret in prets %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre index{% endblock %}
+
+{% block body %}
+    <h1>Livre index</h1>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ livre.nom }}</td>
+                <th>Nom</th>
+                <th>Image</th>
+                <th>Disponibilite</th>
+                <th>DateRendu</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livre in livres %}
+            <tr>
+                <td>{{ livre.Nom }}</td>
                 <td>{{ livre.image }}</td>
+                <td>{{ livre.Disponibilite ? 'Yes' : 'No' }}</td>
+                <td>{{ livre.dateRendu }}</td>
                 <td>
-                    {% if pret.getDateRendu() > "now"|date('Y-m-d') %}
-                        Emprunté
-                    {% else %}
-                        <span style="color: red;">Emprunté (En retard)</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if pret.getDateRendu() > "now"|date('Y-m-d') %}
-                        <a href="{{ path('app_admin_restituer_livre', {'id': livre.id}) }}" class="btn btn-primary">Restituer</a>
-                    {% else %}
-                        <span style="color: red;">Retardataire</span>
-                    {% endif %}
+                    <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}">show</a>
+                    <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">edit</a>
                 </td>
             </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
         {% endfor %}
-    {% endif %}
-{% else %}
-    <tr>
-        <td colspan="4">Aucun livre trouvé</td>
-    </tr>
-{% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_livre_new') }}">Create new</a>
+{% endblock %}
