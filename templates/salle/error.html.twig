@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation Impossible!{% endblock %}
+
+
+{% block body %}
+    <form id="event-form" method="post" action="{{ path('app_salle_reservation',{ id:id }) }}">
+    <input type="hidden" id="event-data" name="event-data" value="">
+
+
+{% block javascripts %}
+<script>
+ 
+alert('Veuillez réserver un créneau en fonction des disponibilités. Ici vous pouvez réserver jusqu\'à '+{{gapHeure}}+' h');
+   var eventForm = document.getElementById('event-form');
+    var eventDataInput = document.getElementById('event-data');
+    eventDataInput.value = JSON.stringify(event);
+    eventForm.submit();
+</script>
+
+{% endblock %}
+{% endblock %}
