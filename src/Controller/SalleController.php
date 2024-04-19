@@ -145,21 +145,16 @@ class SalleController extends AbstractController
 
         }
 
+        
+        if($error){
+            
         $gpH=$rdvs[0]['gapHeure'];
         foreach($rdvs as  $index =>$rdv){
            
             $num=count($rdvs);
           
             if($num>$index+1){
-                $gaps[] = [
-                    'num' => $num,
-                    'gHrdv'=>$rdv['gapHeure'],
-                    'gHplus'=>$rdvs[$index+1]['gapHeure'] ,
-                    'bool' =>($rdv['gapHeure']>$rdvs[$index+1]['gapHeure'])
-                  
-                ];
              
-                
                 if($rdv['gapHeure']>$rdvs[$index+1]['gapHeure'] ){
                     $gpH==$rdvs[$index+1]['gapHeure'];
                 }
@@ -167,8 +162,6 @@ class SalleController extends AbstractController
            
        
         }
-        
-        if($error){
             return $this->render('salle/error.html.twig', 
             [
                 'id' => $id,
