@@ -35,62 +35,166 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[ROUTE('/salle/{id}', name:'app_salle_reservation')]
-    public function reservation(ReservationRepository $calendar): Response
+    #[ROUTE('/salle/{id}', name:'app_salle_reservation', methods: ['GET','POST'])]
+    public function reservation($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
     {    
      
         $events = $calendar->findAll();
 
+        // $idSalle= $id;
+   
+        // $salle = $salle->find($idSalle);
+      
         $rdvs = [];
-        $bg = 'inverse-background';
+      
+      
         foreach($events as $event){
-            $rdvs[] = [
-                'id' => $event->getId(),
-                'title'=>'Indisponible',
-                'start' => $event->getDateFin()->format('Y-m-d H:i:s'),
-                'end' => $event->getDateDebut()->format('Y-m-d H:i:s'),
-                'backgroundColor' => 'red',
-                'borderColor' => $event->getBorderColor(),
-                'textColor' => $event->getTextColor(),
-              
-            ];
+         
+        if($event->getUser()->getId()==$this->getUser()->getId()){
+            $colorBg  = 'blue';
+            $title  = 'Votre réservation';
+        }else{
+            $colorBg  = 'red';
+            $title  = 'Indisponible';
         }
+            if($event->getSalle()->getId() ==$id ){
+                $rdvs[] = [
+                    'id' => $event->getId(),
+                    'idSalle'=>$id,
+                    'title'=>$title,
+                    'start' => $event->getDateDebut()->format('Y-m-d H:i:s'),
+                    'end' => $event->getDateFin()->format('Y-m-d H:i:s'),                   
+                    'backgroundColor' =>  $colorBg,
+                    'borderColor' => $colorBg,
+                    'textColor' => $event->getTextColor(),
+                  
+                ];
+            }
+        } 
 
         $data = json_encode($rdvs);
 
         return $this->render('salle/reservation.html.twig', 
-            compact('data'));
+        [
+            'data' => $data,
+            'id'=> $id,
+        ]
+        );
     }
 
-    #[ROUTE('/save-event', name:'save_event',methods: ['POST'])]
-    public function saveEvent(ReservationRepository $calendar,Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle): Response
+    #[ROUTE('/save-event/{id}', name:'save_event',methods: ['POST'])]
+    public function saveEvent($id,ReservationRepository $calendar,Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle): Response
     {    
 
+        $reservations = $calendar->findAll();
         $eventData = $request->request->get('event-data');
         $event = json_decode($eventData, true);
-       dump( $event);
-        $roomId = 18;
-        $room = $salle->find($roomId);
-        $userId = 13;
-        $user = $user->find($userId);
+        $dateAdd= new \DateTime($event['end']);
+            $dateAdd=$dateAdd->format('d/m/Y');
+            $salleId = $id;
+             $salle = $salle->find($salleId); 
+             $error= false; 
+        foreach($reservations as $reservation){
+
+            $dateCurr=$reservation->getDateDebut()->format('d/m/Y');
         
+
+            if($reservation->getSalle()->getId() ==$id ){
+   if(new \DateTime($event['end'])>$reservation->getDateDebut() && new \DateTime($event['start'])<$reservation->getDateDebut() && $dateAdd==$dateCurr){
+ 
+        $error= true;
+
+        $date=new \DateTime($event['start']);
+        $date=$date->format('H');
+        $dateReservation=$reservation->getDateDebut()->format('H');
+        $dateInt=intval($date);
+        $dateReservationInt=intval($dateReservation);
+        $gapHeure=$dateReservationInt - $dateInt;
+        $rdvs[] = [
+            'gapHeure' => $gapHeure,
+         
+        ];
+   
+   }else{
+   
+  
+   
+    
+    $user = $this->getUser();
     
 
-        $reservation = new Reservation();
-        $reservation->setUser($user);
-        $reservation->setSalle($room);
-        $reservation->setDateDebut(new \DateTime($event['start']));
-        $reservation->setDateFin(new \DateTime($event['end']));
-          $reservation->setBackgroundColor('red');
-            $reservation->setBorderColor('red');
-          $reservation->setTextColor('white');
-        // Définissez d'autres propriétés de l'entité Reservation si nécessaire
-    
-        $entityManager->persist($reservation);
-        $entityManager->flush();
-    
-        // Vous pouvez rediriger ou renvoyer une réponse appropriée
-        return $this->redirectToRoute('app_salle_reservation',['id' => $reservation->getId()]);
+
+    $reservation = new Reservation();
+    $reservation->setUser($user);
+    $reservation->setSalle($salle );
+    $reservation->setDateDebut(new \DateTime($event['start']));
+    $reservation->setDateFin(new \DateTime($event['end']));
    
+    $reservation->setBackgroundColor('red');
+    $reservation->setBorderColor('red');
+    $reservation->setTextColor('white');
+
+
+ 
+
+
+
+   }
+   
+}
+
+        }
+
+        $gpH=$rdvs[0]['gapHeure'];
+        foreach($rdvs as  $index =>$rdv){
+           
+            $num=count($rdvs);
+          
+            if($num>$index+1){
+                $gaps[] = [
+                    'num' => $num,
+                    'gHrdv'=>$rdv['gapHeure'],
+                    'gHplus'=>$rdvs[$index+1]['gapHeure'] ,
+                    'bool' =>($rdv['gapHeure']>$rdvs[$index+1]['gapHeure'])
+                  
+                ];
+             
+                
+                if($rdv['gapHeure']>$rdvs[$index+1]['gapHeure'] ){
+                    $gpH==$rdvs[$index+1]['gapHeure'];
+                }
+            }
+           
+       
+        }
+        
+        if($error){
+            return $this->render('salle/error.html.twig', 
+            [
+                'id' => $id,
+                'gapHeure'=>  $gpH,
+            ]
+            );
+            
+         
+        }else{
+               $entityManager->persist($reservation);
+             $entityManager->flush();
+           
+            return $this->redirectToRoute('app_salle_reservation',['id' => $salle->getId()]);
+        }
+       
+       
+       
+        
     }
+    #[ROUTE('/salle/error/{id}', name:'app_salle_error_reservation', methods: ['GET'])]
+public function error($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
+{    
+ 
+    return $this->render('salle/error.html.twig', [
+        'id' => $id,
+    ]);
+    // return $this->redirectToRoute('app_salle_reservation',['id' =>$id ]);
+}
 }
