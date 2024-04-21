@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservation Impossible!{% endblock %}
+{% block title %}{% trans %}Réservation Impossible!{% endtrans %}{% endblock %}
 
 
 {% block body %}
@@ -10,12 +10,12 @@
 
 {% block javascripts %}
 <script>
- 
-alert('Veuillez réserver un créneau en fonction des disponibilités. Ici vous pouvez réserver jusqu\'à '+{{gapHeure}}+' h');
+
+alert(`{{error}}`+{{gapHeure}});
    var eventForm = document.getElementById('event-form');
     var eventDataInput = document.getElementById('event-data');
     eventDataInput.value = JSON.stringify(event);
-    eventForm.submit();
+    eventForm.submit(); 
 </script>
 
 {% endblock %}

@@ -15,6 +15,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SalleController extends AbstractController
@@ -40,7 +41,7 @@ class SalleController extends AbstractController
     }
 
     #[ROUTE('/salle/{id}', name:'app_salle_reservation', methods: ['GET','POST'])]
-    public function reservation($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
+    public function reservation($id,ReservationRepository $calendar,Request $request, TranslatorInterface $translator, SalleRepository $salle): Response
     {    
         if ($this->isGranted('ROLE_USER')) {
             $events = $calendar->findAll();
@@ -51,10 +52,12 @@ class SalleController extends AbstractController
              
             if($event->getUser()->getId()==$this->getUser()->getId()){
                 $colorBg  = 'blue';
-                $title  = 'Votre réservation';
+                $message1 = $translator->trans('Votre réservation');
+                $title  = $message1;
             }else{
                 $colorBg  = 'red';
-                $title  = 'Indisponible';
+                $message2 = $translator->trans('Indisponible');
+                $title  = $message2;
             }
                 if($event->getSalle()->getId() ==$id ){
                     $rdvs[] = [
@@ -72,11 +75,27 @@ class SalleController extends AbstractController
             } 
     
             $data = json_encode($rdvs);
-    
+
+            $message3 = $translator->trans('Voulez-vous réserver ce créneau ?');
+            $confirmMsg  = $message3;
+
+            $message4 = $translator->trans('Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités ( maximum possible dans l\'absolu : 4h )?');
+            $chooseHourSlot  = $message4;
+
+            $message5 = $translator->trans('Veuillez choisir un créneau de moins de 4h');
+            $errorHours  = $message5;
+          
+           
+          
             return $this->render('salle/reservation.html.twig', 
             [
                 'data' => $data,
                 'id'=> $id,
+                'confirmMsg'=>$confirmMsg,
+                'chooseHourSlot'=> $chooseHourSlot ,
+                'errorHours'=>$errorHours
+
+
             ]
             );
         }else {
@@ -86,7 +105,7 @@ class SalleController extends AbstractController
     }
 
     #[ROUTE('/save-event/{id}', name:'save_event',methods: ['POST'])]
-    public function saveEvent($id,ReservationRepository $calendar,Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle): Response
+    public function saveEvent($id,ReservationRepository $calendar,Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle, TranslatorInterface $translator): Response
     {    
 
         $reservations = $calendar->findAll();
@@ -141,10 +160,13 @@ class SalleController extends AbstractController
            
        
         }
+        $message = $translator->trans('Veuillez réserver un créneau en fonction des disponibilités. Heures disponibles pour ce créneau : ');
+        $error = $message;
             return $this->render('salle/error.html.twig', 
             [
                 'id' => $id,
                 'gapHeure'=>  $gpH,
+                'error'=>$error
             ]
             );
             
@@ -173,9 +195,11 @@ class SalleController extends AbstractController
     #[ROUTE('/salle/error/{id}', name:'app_salle_error_reservation', methods: ['GET'])]
 public function error($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
 {    
- 
+
+  
     return $this->render('salle/error.html.twig', [
         'id' => $id,
+      
     ]);
     // return $this->redirectToRoute('app_salle_reservation',['id' =>$id ]);
 }
