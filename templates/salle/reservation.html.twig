@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendrier{% endblock %}
+{% block title %}{% trans %}Calendrier {% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -48,7 +48,7 @@
                 end: 'timeGridWeek'
 
     },
-    events: {{ data|raw }},
+    events: {{ data|raw}},
     selectable: true,
 
   });
@@ -63,11 +63,11 @@
          }
 
     calendar.on('select', function(info) {
-      
-       if (window.confirm("voulez-vous réserver ce créneau?")) {
-      var heure = prompt("Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités ( maximum possible dans l'absolu : 4h )?");
+     
+       if ( window.confirm(`{{confirmMsg}}`) ) {
+      var heure = prompt(`{{chooseHourSlot}}`);
       if(heure>4){
-        alert('Veuillez choisir un créneau de moins de 4h');
+        alert(`{{errorHours}}`);
         //supprimer les cases qui s'affiche quand on clique ok 
       }else{
           var dateFin = new Date(info.start.toISOString());

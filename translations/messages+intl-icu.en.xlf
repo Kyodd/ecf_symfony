@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="dcTsAyj" resname="Salut">
+        <source>Salut</source>
+        <target>Hello </target>
+      </trans-unit>
+      <trans-unit id="cJrMnvV" resname="Bibliothèque">
+        <source>Bibliothèque</source>
+        <target>Library</target>
+      </trans-unit>
+      <trans-unit id="LyBQMAk" resname="Gestion des livres">
+        <source>Gestion des livres</source>
+        <target>Books management</target>
+      </trans-unit>
+      <trans-unit id="lSzAThk" resname="Gestion des salles">
+        <source>Gestion des salles</source>
+        <target>Rooms management</target>
+      </trans-unit>
+      <trans-unit id="l3J1zy4" resname="Gestion des abonnements">
+        <source>Gestion des abonnements</source>
+        <target>Subscriptions management</target>
+      </trans-unit>
+      <trans-unit id="3TJ4c3V" resname="Nos livres">
+        <source>Nos livres</source>
+        <target>Our books</target>
+      </trans-unit>
+      <trans-unit id=".FCZNDJ" resname="Nos salles">
+        <source>Nos salles</source>
+        <target>Our workrooms</target>
+      </trans-unit>
+      <trans-unit id="2yrzjF0" resname="Nos abonnements">
+        <source>Nos abonnements</source>
+        <target>Our subscriptions</target>
+      </trans-unit>
+      <trans-unit id="S0LGaQ6" resname="Administration">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="KPRXHyi" resname="Mon compte">
+        <source>Mon compte</source>
+        <target>My account</target>
+      </trans-unit>
+      <trans-unit id="FkOyzR0" resname="Me deconnecter">
+        <source>Me deconnecter</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="J0b24C_" resname="M'inscrire">
+        <source>M'inscrire</source>
+        <target>Sign up</target>
+      </trans-unit>
+      <trans-unit id="JxMJ_zB" resname="Me connecter">
+        <source>Me connecter</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="Tgv_0eM" resname="Capacité :">
+        <source>Capacité :</source>
+        <target>Capacity :</target>
+      </trans-unit>
+      <trans-unit id="emhCTss" resname="Equipements disponibles :">
+        <source>Equipements disponibles :</source>
+        <target>Equipment available :</target>
+      </trans-unit>
+      <trans-unit id="YWA.rQp" resname="Voir les créneaux">
+        <source>Voir les créneaux</source>
+        <target>See slots</target>
+      </trans-unit>
+      <trans-unit id="G9bl1N2" resname="Réservation Impossible!">
+        <source>Réservation Impossible!</source>
+        <target>Reservation impossible!</target>
+      </trans-unit>
+      <trans-unit id="tl2QCOi" resname="Calendrier">
+        <source>Calendrier</source>
+        <target>Calendar</target>
+      </trans-unit>
+      <trans-unit id="QuN2BLY" resname="Modifier">
+        <source>Modifier</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="SYWhcXR" resname="Modifier les informations de la salle">
+        <source>Modifier les informations de la salle</source>
+        <target>Edit room information</target>
+      </trans-unit>
+      <trans-unit id="QLeNDdM" resname="Retour à la liste">
+        <source>Retour à la liste</source>
+        <target>Back to list</target>
+      </trans-unit>
+      <trans-unit id="QSvguc1" resname="Informations">
+        <source>Informations</source>
+        <target>Informations</target>
+      </trans-unit>
+      <trans-unit id="8Tp.aBZ" resname="Disponibilités">
+        <source>Disponibilités</source>
+        <target>Availability</target>
+      </trans-unit>
+      <trans-unit id="1wAi_Yw" resname="Base de données vide">
+        <source>Base de données vide</source>
+        <target>Empty database</target>
+      </trans-unit>
+      <trans-unit id="o7Bk4WD" resname="Ajouter une nouvelle salle">
+        <source>Ajouter une nouvelle salle</source>
+        <target>Add a new room</target>
+      </trans-unit>
+      <trans-unit id="ssEkU20" resname="Nom">
+        <source>Nom</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="Z7.PMth" resname="Capacité">
+        <source>Capacité</source>
+        <target>Capacity</target>
+      </trans-unit>
+      <trans-unit id="niwKvXu" resname="Nouvelle Salle">
+        <source>Nouvelle Salle</source>
+        <target>New workroom</target>
+      </trans-unit>
+      <trans-unit id="Z8bg_k1" resname="Créer une nouvelle salle">
+        <source>Créer une nouvelle salle</source>
+        <target>Create a new workroom</target>
+      </trans-unit>
+      <trans-unit id="cdx0hz4" resname="Enregistrer">
+        <source>Enregistrer</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="S2EZxKK" resname="Votre réservation">
+        <source>Votre réservation</source>
+        <target>Your reservation</target>
+      </trans-unit>
+      <trans-unit id="2udc.zu" resname="Indisponible">
+        <source>Indisponible</source>
+        <target>Not available</target>
+      </trans-unit>
+      <trans-unit id="Fn.nMQA" resname="Veuillez réserver un créneau en fonction des disponibilités. Heures disponibles pour ce créneau : ">
+        <source>Veuillez réserver un créneau en fonction des disponibilités. Heures disponibles pour ce créneau : </source>
+        <target>Please reserve a slot according to availability. Hours available for this slot : </target>
+      </trans-unit>
+      <trans-unit id="sEZLTDN" resname="Voulez-vous réserver ce créneau ?">
+        <source>Voulez-vous réserver ce créneau ?</source>
+        <target>Would you like to reserve this slot?</target>
+      </trans-unit>
+      <trans-unit id="nxqI5.p" resname="Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités ( maximum possible dans l'absolu : 4h )?">
+        <source>Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités ( maximum possible dans l'absolu : 4h )?</source>
+        <target>Please choose the number of hours of your booking according to availability ( absolute maximum possible : 4h )?</target>
+      </trans-unit>
+      <trans-unit id="Gds9tGN" resname="Veuillez choisir un créneau de moins de 4h">
+        <source>Veuillez choisir un créneau de moins de 4h</source>
+        <target>Please select a time slot of less than 4 hours</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

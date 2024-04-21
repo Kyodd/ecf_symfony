@@ -16,12 +16,12 @@
                             <div class="card  bg-dark text-light mt-3 p-4">
                                 <div class="card-body">
                                     <h2 class='card-title text-center'>{{ salle.nom }}</h2>
-                                    <p class='card-text text-center'>Capacité : {{ salle.capacite }}</p>
-                                 <p class='card-text text-center'>Equipements disponibles : 
+                                    <p class='card-text text-center'>{% trans %}Capacité :{% endtrans %} {{ salle.capacite }}</p>
+                                 <p class='card-text text-center'>{% trans %}Equipements disponibles : {% endtrans %}
                                     {% for equip in salle.equipement %}
-                                     {{  equip.getNom() }} 
+                                     {{  equip.getNom()  }} 
                                 {% endfor %}
-                                  <a href="{{ path('app_salle_reservation', { id:salle.id }) }}">Voir les créneaux</a>
+                                  <a href="{{ path('app_salle_reservation', { id:salle.id }) }}">{% trans %}Voir les créneaux{% endtrans %}</a>
                                 </p>
 
                                 </div>
