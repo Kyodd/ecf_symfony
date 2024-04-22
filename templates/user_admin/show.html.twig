@@ -5,6 +5,9 @@
 {% block body %}
     <h1>User</h1>
 
+    {{ dump (app.user) }}
+    {{ dump (user.id) }}
+
     <table class="table">
         <tbody>
             <tr>
@@ -17,12 +20,18 @@
             </tr>
             <tr>
                 <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>
+                    {% if 'ROLE_ADMIN' in app.user.roles %} 
+                        Administrateur
+                    {% elseif 'ROLE_USER' in app.user.roles %}
+                        Utilisateur
+                    {% endif %}
+                </td>
             </tr>
-            <tr>
+            {# <tr>
                 <th>Password</th>
                 <td>{{ user.password }}</td>
-            </tr>
+            </tr> #}
             <tr>
                 <th>Nom</th>
                 <td>{{ user.nom }}</td>

@@ -20,7 +20,7 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $Kyodd = new User();
-        $Kyodd->setEmail('admind@admin.fr');
+        $Kyodd->setEmail('admin@admin.fr');
         $Kyodd->setRoles(['ROLE_ADMIN']);
         $Kyodd->setPassword($this->userPasswordHasherInterface->hashPassword($Kyodd, 'admin'));
 
@@ -35,7 +35,7 @@ class UserFixtures extends Fixture
         $manager->persist($Kyodd);
 
         $faker = Factory::create('fr_FR');
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $user = new User();
             $user->setEmail($faker->email);
             $user->setRoles(['ROLE_USER']);
