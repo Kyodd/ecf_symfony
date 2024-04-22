@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendrier{% endblock %}
+{% block title %}{% trans %}Calendrier {% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -12,16 +12,23 @@
 {% endblock %}
 
 {% block body %}
+{{dump(data)}}
     <div id="calendrier">
     </div>
-     <form id="event-form" method="post" action="{{ path('save_event') }}">
+     <form id="event-form" method="post" action="{{ path('save_event',{ id:id }) }}">
     <input type="hidden" id="event-data" name="event-data" value="">
-    <button type="submit">Enregistrer l'événement</button>
+
+ 
+
+</div>
+</div>
 </form>
 
 
 {% block javascripts %}
 <script>
+
+ 
     document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendrier');
 
@@ -37,39 +44,50 @@
     height:'380px',
     headerToolbar: {
        start: 'prev,next today',
-                center: 'addEventButton',
+                
                 end: 'timeGridWeek'
 
     },
-    events: {{ data|raw }},
+    events: {{ data|raw}},
     selectable: true,
-    select: function(arg) {
-            calendar.addEvent({
-                start: arg.start,
-                end: arg.end,
-                backgroundColor: arg.backgroundColor,
-                borderColor: arg.borderColor,
-                textColor: arg.textColor,
-            })
-    }
 
   });
 
   calendar.render();
    var eventForm = document.getElementById('event-form');
     var eventDataInput = document.getElementById('event-data');
+ function addHours(date, hours) {
+           const hoursToAdd = hours * 60 * 60 * 1000;
+           date.setTime(date.getTime() + hoursToAdd);
+           return date;
+         }
 
     calendar.on('select', function(info) {
+     
+       if ( window.confirm(`{{confirmMsg}}`) ) {
+      var heure = prompt(`{{chooseHourSlot}}`);
+      if(heure>4){
+        alert(`{{errorHours}}`);
+        //supprimer les cases qui s'affiche quand on clique ok 
+      }else{
+          var dateFin = new Date(info.start.toISOString());
+          dateFin= addHours(dateFin, heure);
+          dateFin= dateFin.toISOString().substring(0, 24);
+       
+
             var event = {
                 start: info.start.toISOString(),
-                end: info.end.toISOString(),
-                // Ajoutez d'autres propriétés si nécessaire
+                end: dateFin,
+                hours:heure,
+
             };
-
+      
             eventDataInput.value = JSON.stringify(event);
-          
+             
             eventForm.submit();
-
+      }
+       
+       }
     });
 
 });

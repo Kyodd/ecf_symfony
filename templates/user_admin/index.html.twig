@@ -49,9 +49,11 @@
 						<td>{{ user.ville }}</td>
 						<td>{{ user.phonenumber }}</td>
 						<td>
-							<a href="{{ path('app_user_admin_show', {'id': user.id}) }}">show</a>
-							<a href="{{ path('app_user_admin_edit', {'id': user.id}) }}">edit</a>
-							<a href="{{ path('app_ban_user', {'id': user.id}) }}" onclick="return confirm('Vous allez bannir {{ user.nom }} {{ user.prenom }}. Etes en êtes-vous sûr?')" class="btn btn-danger">Bannir</a>
+							<div class="btn">
+								<a  class="btn" href="{{ path('app_user_admin_show', {'id': user.id}) }}">show</a>
+								<a  class="btn" href="{{ path('app_user_admin_edit', {'id': user.id}) }}">edit</a>
+								<a  href="{{ path('app_ban_user', {'id': user.id}) }}" onclick="return confirm('Vous allez bannir {{ user.nom }} {{ user.prenom }}. Etes en êtes-vous sûr?')" class="btn btn-danger">Bannir</a>
+							</div>
 						</td>
 					</tr>
 

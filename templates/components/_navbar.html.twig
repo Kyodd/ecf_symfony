@@ -2,7 +2,7 @@
 
 	<div class="container-fluid">
 
-		<a class="navbar-brand" href="{{ path('app_home') }}">Bibliothèque</a>
+		<a class="navbar-brand" href="{{ path('app_home') }}">{% trans %}Bibliothèque{% endtrans %}</a>
 
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -15,22 +15,35 @@
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#"></a>
 				</li>
+{% if app.user %}
 
+					{% if 'ROLE_ADMIN' in app.user.roles %}
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_livre') }}">Nos livres</a>
+					<a class="nav-link" href="{{ path('app_admin_livre_index') }}">{% trans %}Gestion des livres{% endtrans %}</a>
+				</li>
+ 	              <li class="nav-item">
+					<a class="nav-link" href="{{ path('app_admin_salle_index') }}">{% trans %}Gestion des salles{% endtrans %}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Gestion des abonnements{% endtrans %}</a>
+				</li>
+					<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Gestion des Prêts{% endtrans %}</a>
 				</li>
 
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_salle') }}">Nos salles</a>
+ {% else %}
+	<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_livre') }}">{% trans %}Nos livres{% endtrans %}</a>
 				</li>
-
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_subscription') }}">Nos abonnements</a>
+ 	              <li class="nav-item">
+					<a class="nav-link" href="{{ path('app_salle') }}">{% trans %}Nos salles{% endtrans %}</a>
 				</li>
-
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Nos abonnements{% endtrans %}</a>
+				</li>
+  {% endif %}
+  {% endif %}
 			</ul>
-
-
 			<ul class='navbar-nav ms-auto mb-2 mb-lg-0'>
 
 				{% if app.user %}
@@ -38,30 +51,46 @@
 					{% if 'ROLE_ADMIN' in app.user.roles %}
 
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_user_admin_index') }}">Administration</a>
+							<a class="nav-link" href="{{ path('app_user_admin_index') }}">{% trans %}Administration{% endtrans %}</a>
 						</li>
                     {% endif %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_user_admin_show', {'id' : app.user.id}) }}">Mon compte</a>
+
+						<a class="nav-link" href="{{ path('app_user_admin_show', {'id' : app.user.id}) }}">{% trans %}Mon compte{% endtrans %}</a>
+
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_logout') }}">Me deconnecter</a>
+						<a class="nav-link" href="{{ path('app_logout') }}">{% trans %}Me deconnecter{% endtrans %}</a>
 					</li>
 
 					{% else %}
 
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">M'inscrire</a>
+							<a class="nav-link" href="{{ path('app_register') }}">{% trans %}M'inscrire{% endtrans %}</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
+							<a class="nav-link" href="{{ path('app_login') }}">{% trans %}Me connecter{% endtrans %}</a>
 						</li>
 
                 {% endif %}
 
 				</ul>
+						<ul class='navbar-nav ml-auto mb-2 mb-lg-0'>
+				
+                    {% for locale in locales  %}
+					{% if locale != app.request.locale  %}
+					
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_translate',{'locale':locale}) }}"><img style='width:70px;'src="{{asset('img/'~locale~'.png')}}" alt="{{locale}}"></a>
+						</li>    
+                    {% endif %}
+                    {% endfor %}
+					   
+
+				</ul>
+
 			</div>
 		</div>
 	</nav>

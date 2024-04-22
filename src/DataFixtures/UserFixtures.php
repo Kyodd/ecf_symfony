@@ -31,8 +31,21 @@ class UserFixtures extends Fixture
         $Kyodd->setCodepostal('75000');
         $Kyodd->setVille('Paris');
         $Kyodd->setPhonenumber('0123456789');
-
         $manager->persist($Kyodd);
+        $roka = new User();
+        $roka->setEmail('roka@roka.fr');
+        $roka->setRoles(['ROLE_USER']);
+        $roka->setPassword($this->userPasswordHasherInterface->hashPassword($roka, 'rokayia'));
+
+        $roka->setNom('roka');
+        $roka->setPrenom('roka');
+        $roka->setBirthdate(new \DateTime('1999-12-12'));
+        $roka->setAdresse('14 rue Alle');
+        $roka->setCodepostal('75000');
+        $roka->setVille('Paris');
+        $roka->setPhonenumber('0123456789');
+
+        $manager->persist($roka);
 
         $faker = Factory::create('fr_FR');
         for ($i = 0; $i < 15; $i++) {

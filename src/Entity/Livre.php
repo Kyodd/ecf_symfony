@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+
+use DateTimeInterface;
+
 use Doctrine\DBAL\Types\Types;
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LivreRepository;
 use Doctrine\Common\Collections\Collection;
@@ -43,16 +47,20 @@ class Livre
     #[ORM\JoinColumn(nullable: true)]
     private ?Etat $etat = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeInterface $dateRendu = null;
+    
+
     /**
      * @var Collection<int, Prets>
      */
     #[ORM\OneToMany(targetEntity: Prets::class, mappedBy: 'livre')]
-    private Collection $Pret;
+    private Collection $prets;
 
    
     public function __construct()
     {
-        $this->Pret = new ArrayCollection();
+        $this->prets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,15 +155,15 @@ class Livre
     /**
      * @return Collection<int, Prets>
      */
-    public function getPret(): Collection
+    public function getPrets(): Collection
     {
-        return $this->Pret;
+        return $this->prets;
     }
 
     public function addPret(Prets $pret): static
     {
-        if (!$this->Pret->contains($pret)) {
-            $this->Pret->add($pret);
+        if (!$this->prets->contains($pret)) {
+            $this->prets->add($pret);
             $pret->setLivre($this);
         }
 
@@ -164,7 +172,7 @@ class Livre
 
     public function removePret(Prets $pret): static
     {
-        if ($this->Pret->removeElement($pret)) {
+        if ($this->prets->removeElement($pret)) {
             // set the owning side to null (unless already changed)
             if ($pret->getLivre() === $this) {
                 $pret->setLivre(null);
@@ -182,6 +190,17 @@ class Livre
     public function setNom(string $Nom): static
     {
         $this->Nom = $Nom;
+
+        return $this;
+    }
+    public function getDateRendu(): ?DateTimeInterface
+    {
+        return $this->dateRendu;
+    }
+
+    public function setDateRendu(?DateTimeInterface $dateRendu): self
+    {
+        $this->dateRendu = $dateRendu;
 
         return $this;
     }

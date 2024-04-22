@@ -8,26 +8,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Auteur</th>
-                <th>AnneePublication</th>
-                <th>Resume</th>
+                <th>Nom</th>
                 <th>Image</th>
                 <th>Disponibilite</th>
-                <th>Note</th>
+                <th>DateRendu</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for livre in livres %}
             <tr>
-                <td>{{ livre.id }}</td>
-                <td>{{ livre.Auteur }}</td>
-                <td>{{ livre.anneePublication }}</td>
-                <td>{{ livre.Resume }}</td>
+                <td>{{ livre.Nom }}</td>
                 <td>{{ livre.image }}</td>
                 <td>{{ livre.Disponibilite ? 'Yes' : 'No' }}</td>
-                <td>{{ livre.note }}</td>
+                <td>{{ livre.dateRendu }}</td>
                 <td>
                     <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}">show</a>
                     <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">edit</a>
@@ -35,7 +29,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="10">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
