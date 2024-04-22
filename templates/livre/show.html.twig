@@ -7,15 +7,26 @@
     <h1>Détails du Livre</h1>
 
     <div>
-        <h2>{{ livre.nom }}</h2>
+        <h3>{{ livre.nom }}</h3>
         <p><strong>Auteur:</strong> {{ livre.auteur }}</p>
         <p><strong>Année de Publication:</strong> {{ livre.anneePublication }}</p>
-        <p><strong>Résumé:</strong> {{ livre.resume }}</p>
-        <p><strong>Disponibilité:</strong> {% if livre.disponibilite %}Disponible{% else %}Non disponible{% endif %}</p>
-        <p><strong>Note:</strong> {{ livre.note }}</p>
         <p><strong>État:</strong> {{ livre.etat.libelle }}</p>
+        <p><strong>Note:</strong> {{ livre.note }}</p>
+        <p><strong>Disponibilité:</strong> {% if livre.disponibilite %}Disponible{% else %}Non disponible{% endif %}</p>
         <img src="{{ livre.image }}" alt="Image du Livre">
-        <!-- Ajoutez d'autres détails du livre si nécessaire -->
     </div>
+
+     {% set pretEnCours = prets[0] ?? null %}
+    {% if livre.disponibilite and not pretEnCours %}
+        <!-- Si le livre est disponible et aucun prêt en cours -->
+        <form action="{{ path('reservation', {'id': livre.id}) }}" method="post">
+            <button type="submit" class="btn btn-success">Réserver</button>
+        </form>
+    {% elseif pretEnCours %}
+        <!-- Si le livre est déjà réservé -->
+        <p>Livre déjà réservé, disponible à partir du {{ pretEnCours.dateFin|date('d/m/Y') }}</p>
+    {% endif %}
+
+    <a href="{{ path('app_livre') }}" class="btn btn-primary">Retour à la liste des livres</a>
 </div>
 {% endblock %}

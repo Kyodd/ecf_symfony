@@ -9,6 +9,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Nom</th>
                 <th>Auteur</th>
                 <th>Année de Publication</th>
@@ -17,6 +18,7 @@
         </thead>
         <tbody>{% for livre in livres %}
     <tr>
+        <td>{{ livre.Id }}</td>
         <td>{{ livre.nom }}</td>
         <td>{{ livre.auteur }}</td>
         <td>{{ livre.anneePublication }}</td>

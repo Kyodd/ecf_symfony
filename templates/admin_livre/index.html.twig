@@ -8,23 +8,44 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Nom</th>
                 <th>Image</th>
-                <th>Disponibilite</th>
-                <th>DateRendu</th>
+                <th>Date de Réstitution</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for livre in livres %}
             <tr>
+                <td>{{ livre.Id }}</td>
                 <td>{{ livre.Nom }}</td>
                 <td>{{ livre.image }}</td>
-                <td>{{ livre.Disponibilite ? 'Yes' : 'No' }}</td>
-                <td>{{ livre.dateRendu }}</td>
+        <td>
+    {% set pretEnCours = pret[livre.id] ?? NULL %}
+    {% if pretEnCours %}
+        <!-- Si le livre est déjà réservé -->
+        <span>Livre déjà réservé, disponible à partir du {{ pretEnCours.dateFin|date('d/m/Y') }}</span>
+        
+        {% if pretEnCours.dateRendu is empty %}
+            <!-- Bouton pour marquer le livre comme rendu -->
+            <form action="{{ path('app_admin_livre_rendu', {'id': livre.id}) }}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-info">Rendu</button>
+            </form>
+        {% else %}
+            <span>Livre rendu le {{ pretEnCours.dateRendu|date('d/m/Y') }}</span>
+        {% endif %}
+    {% else %}
+        <!-- Si aucun prêt en cours pour ce livre -->
+        <!-- Pas de bouton "Réserver" ici -->
+    {% endif %}
+    <!-- Bouton pour voir les détails du livre -->
+    <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}" class="btn btn-primary">Voir</a>
+</td>
+
                 <td>
                     <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}">show</a>
-                    <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +56,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_livre_new') }}">Create new</a>
+    <a href="{{ path('app_admin_livre_new') }}">Ajouter un nouveau livre </a>
 {% endblock %}
