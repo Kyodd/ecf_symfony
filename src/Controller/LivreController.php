@@ -31,31 +31,37 @@ class LivreController extends AbstractController
         ]);
 
        
-          // Passer les informations à la vue Twig pour affichage
-        return $this->render('livre/index.html.twig', [
-            'livresInfo' => $livresInfo,
-        ]);
+        //   // Passer les informations à la vue Twig pour affichage
+        // return $this->render('livre/index.html.twig', [
+        //     'livresInfo' => $livresInfo,
+        // ]);
     }
 
     #[Route('/livre/{id}', name: 'app_livre_show')]
-    public function show(Livre $livre): Response
+    public function show(Livre $livre, PretsRepository $pretRepos): Response
     {
+        // Récupérer les prêts en cours pour ce livre
+        $pretsEnCours = $pretRepos->findPrets($livre);
+    
         return $this->render('livre/show.html.twig', [
             'livre' => $livre,
+            'prets' => $pretsEnCours,
         ]);
     }
-    #[Route('/livre/admin/{id}', name: 'app_admin_livre_show')]
-    public function adminShow(Livre $livre, LivreRepository $livreRepository): Response
+    
+    
+    // #[Route('/livre/admin/{id}', name: 'app_admin_livre_show')]
+    // public function adminShow(Livre $livre, LivreRepository $livreRepository): Response
 
-    {
-        // Récupérer les prêts associés à ce livre
-        $prets = $livreRepository->findPretsByLivre($livre);
+    // {
+    //     // Récupérer les prêts associés à ce livre
+    //     $prets = $livreRepository->findPretsByLivre($livre);
 
-        return $this->render('admin/livre/show.html.twig', [
-            'livre' => $livre,
-            'prets' => $prets,
-        ]);
-    }
+    //     return $this->render('admin/livre/show.html.twig', [
+    //         'livre' => $livre,
+    //         'prets' => $prets,
+    //     ]);
+    // }
     #[Route('/livre/{id}/reservation', name: 'reservation')]
 public function reservation(Livre $livre, Request $request, ManagerRegistry $doctrine): Response
 {
