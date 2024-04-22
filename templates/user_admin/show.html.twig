@@ -30,10 +30,6 @@
                     {% endif %}
                 </td>
             </tr>
-            {# <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr> #}
             <tr>
                 <th>Nom</th>
                 <td>{{ user.nom }}</td>
@@ -55,7 +51,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for livre in livres %}
+            {% for livre in livre %}
                 <tr>
                     <td><img src="{{ livre.image }}" alt="Image du livre" style="width: 100px;"></td>
                     <td>{{ livre.titre }}</td>
