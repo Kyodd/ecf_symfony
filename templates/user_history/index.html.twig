@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserHistoryController!
+{% endblock %}
+
+{% block body %}
+
+	<section class="container d-flex justify-content-center align-items-center mt-5">
+		{% for p in prets %}
+			{% if p.getUser().getId() == app.user.id %}
+				<div class="card mb-3 text-center d-flex justify-content-center align-items-center" style="max-width: 28rem;">
+					<div class="card-body ">
+						<h5 class="card-title mb-3">{{ p.getLivre().getNom() }}</h5>
+						<p class="card-text">
+							<strong>Date de début:</strong>
+							{{ p.getDateDebut | date('d/m/Y') }}</p>
+						<p class="card-text">
+							<strong>Date de fin:</strong>
+							{{ p.getDateFin | date('d/m/Y') }}</p>
+
+						<div class="d-flex justify-content-center align-items-center gap-3">
+							<a href="{{path ("app_livre_show", {"id":p.getLivre().getId() } ) }}" class="btn btn-primary ">Voir détails</a>
+							<a href="#" class="btn btn-danger ">Rendre le livre</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</section>
+
+	<section class="my-5 mx-5">
+		{% for p in reservation %}
+
+			{% if p.getUser().getId() == app.user.id %}
+
+
+				<div class="card mb-3" style="max-width: 28rem;">
+					<div class="card-body">
+						<h5 class="card-title">{{ p.getSalle().getNom() }}</h5>
+						<p class="card-text">
+							<strong>Date de début:</strong>
+							{{ p.getDateDebut | date('d/m/Y') }}</p>
+						<p class="card-text">
+							<strong>Date de fin:</strong>
+							{{ p.getDateFin | date('d/m/Y') }}</p>
+						<div class="d-flex justify-content-center align-items-center gap-3">
+							<a href="#" class="btn btn-primary ">Voir détails</a>
+                            {# {{path ("app_livre_show", {"id":p.getSalle().getId() } ) }} Pour le bouton des salles /\ #}
+							<a href="#" class="btn btn-danger ">Rendre la Salle</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+		{% endfor %}
+	</section>
+
+{% endblock %}

@@ -50,6 +50,7 @@ class UserAdminController extends AbstractController
     public function show(User $user, ManagerRegistry $doctrine): Response
     {
         $user = $this->getUser();
+        $livre = $doctrine->getRepository(User::class)->find($user->getId());
 
         if($user && $user->isBanned()){
             return $this->redirectToRoute('app_ban');
