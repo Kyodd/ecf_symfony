@@ -6,8 +6,45 @@
 <div class="container">
     <h1>Liste des Livres</h1>
 
+    {{ dump (app.user) }}
+    {{ dump (user.id) }}
+
     <table class="table">
+
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>
+                    {% if 'ROLE_ADMIN' in app.user.roles %} 
+                        Administrateur
+                    {% elseif 'ROLE_USER' in app.user.roles %}
+                        Utilisateur
+                    {% endif %}
+                </td>
+            </tr>
+            {# <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr> #}
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ user.prenom }}</td>
+            </tr>
+
         <thead>
+
             <tr>
                 <th>Image</th>
                 <th>Titre</th>

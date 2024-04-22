@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,26 +47,66 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_admin_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, ManagerRegistry $doctrine): Response
     {
+        $user = $this->getUser();
+
+        if($user && $user->isBanned()){
+            return $this->redirectToRoute('app_ban');
+        }
+
+        if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('user_admin/show.html.twig', [
             'user' => $user,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_admin_edit', methods: ['GET', 'POST'])]
+    // #[Route('/{id}', name: 'app_user_admin_edit', methods: ['GET', 'POST'])]
+    // public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    // {
+    //     $form = $this->createForm(UserType::class, $user);
+    //     $form->handleRequest($request);
+
+    //     if($user && $user->isBanned()){
+    //         return $this->redirectToRoute('app_ban');
+    //     }
+
+    //     if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+    //         return $this->redirectToRoute('app_home');
+    //     }
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
+
+    //         return $this->redirectToRoute('app_user_admin_index', [], Response::HTTP_SEE_OTHER);
+    //     }
+
+    //     return $this->render('user_admin/edit.html.twig', [
+    //         'user' => $user,
+    //         'form' => $form,
+    //     ]);
+    // }
+
+    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_admin_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_show', ['id' => $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user_admin/edit.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);

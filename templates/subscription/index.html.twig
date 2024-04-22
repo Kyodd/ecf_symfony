@@ -1,15 +1,45 @@
 {% extends 'base.html.twig' %}
-{% block title %}Subscription index{% endblock %}
+{% block title %}Subscription index
+{% endblock %}
 
 {% block body %}
-    <h1>Hello SubscriptionController!</h1>
 
-    {% for Abonnement in typeRepo %}
+	<h1>Hello SubscriptionController!</h1>
 
-        <p>
-            {{ Abonnement.id }} - {{ Abonnement.name }}
-        </p>
+	{% if app.user is null %}
 
-    {% endfor %}
+		<h2 class="mb-5">Pour acceder aux services de cette page, veuillez vous connecter</h2>
 
-{% endblock %}
+	{% endif %}
+
+
+	<section class="container d-flex justify-content-center align-items-center mt-5">
+		{% for abonnement in typeRepo %}
+			<div class="mx-3">
+				<div class="text-center">
+
+					<div class="card text-white bg-secondary mb-3 mx-5" style="max-width: 18rem;">
+						<div class="card-header bg-dark">
+
+							{% if abonnement.name == "Monthly" %}
+                            Mensuel
+                            {% elseif abonnement.name == "Yearly" %}
+                            Annuel
+                            {% endif %}
+
+							</div>
+
+							<div class="card-body">
+
+								<h5 class="card-title"></h5>
+									<p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
+									<a href="#" class="btn btn-outline-dark">S'abonner</a>
+                                    
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</section>
+
+		{% endblock %}

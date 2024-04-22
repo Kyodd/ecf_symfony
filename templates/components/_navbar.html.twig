@@ -56,7 +56,9 @@
                     {% endif %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="#">{% trans %}Mon compte{% endtrans %}</a>
+
+						<a class="nav-link" href="{{ path('app_user_admin_show', {'id' : app.user.id}) }}">{% trans %}Mon compte{% endtrans %}</a>
+
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('app_logout') }}">{% trans %}Me deconnecter{% endtrans %}</a>
