@@ -22,12 +22,12 @@ class AdminLivreController extends AbstractController
 {
     #[Route('/', name: 'app_admin_livre_index', methods: ['GET'])]
     public function index(LivreRepository $livreRepository,  PretsRepository $pretRepos): Response
-    {
-        // return $this->render('admin_livre/index.html.twig', [
-        //     'livres' => $livreRepository->findAll(),
-        // ]);
-
+    {    
+        if (!$this->isGranted('ROLE_ADMIN')) {
+        return $this->redirectToRoute('app_home');
+    }
         
+          
         $livres = $livreRepository->findAll(); // Récupérer tous les livres
         $pretsEnCours= $pretRepos->findPrets();// Récupérer tous les livres
        
@@ -37,6 +37,24 @@ class AdminLivreController extends AbstractController
             
         ]);
         
+    }
+     #[Route('/en_retard', name: 'app_admin_livre_en_retard', methods: ['GET'])]
+    public function livresEnRetard(LivreRepository $livreRepository, PretsRepository $pretRepos): Response
+    {
+        // Récupérer les livres en retard depuis le repository
+        $livresEnRetard = $livreRepository->findLivresEnRetard();
+        $date = new DateTime();
+        // Récupérer les prêts en cours pour chaque livre en retard
+        $pretsEnCours = [];
+        foreach ($livresEnRetard as $livre) {
+            $pretsEnCours[$livre->getId()] = $pretRepos->findPrets($livre->getId());
+        }
+
+        return $this->render('admin_livre/retard.html.twig', [
+            'livres' => $livresEnRetard,
+            'pret' => $pretsEnCours,
+            'datetoday' => $date
+        ]);
     }
 
     #[Route('/rendu/{id}', name: 'app_admin_livre_rendu', methods: ['POST'])]
