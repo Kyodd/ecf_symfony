@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres en retard{% endblock %}
+
+{% block body %}
+    <h1>Livres en retard</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Image</th>
+                <th>Date de Réstitution</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre.id }}</td>
+                    <td>{{ livre.nom }}</td>
+                    <td>{{ livre.image }}</td>
+                    <td>
+                        {% set pretEnCours = pret[livre.id] ?? NULL %}
+                        {% if pretEnCours %}
+                            {% if pretEnCours.dateFin < "now"|date and pretEnCours.dateRendu is empty %}
+                                <!-- Surbrillance si en retard -->
+                                <span style="background-color: yellow;">{{ pretEnCours.dateFin|date('d/m/Y') }}</span>
+                            {% else %}
+                                {{ pretEnCours.dateFin|date('d/m/Y') }}
+                            {% endif %}
+                        {% else %}
+                            - <!-- Si aucun prêt en cours pour ce livre -->
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pretEnCours %}
+                            <!-- Bouton pour marquer le livre comme rendu -->
+                            <form

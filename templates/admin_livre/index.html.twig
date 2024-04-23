@@ -5,6 +5,11 @@
 {% block body %}
     <h1>Livre index</h1>
 
+    <!-- Bouton pour afficher uniquement les livres en retard -->
+    <form action="{{ path('app_admin_livre_en_retard') }}" method="get" style="margin-bottom: 20px;">
+        <button type="submit" class="btn btn-danger">Afficher les livres en retard</button>
+    </form>
+
     <table class="table">
         <thead>
             <tr>
@@ -12,49 +17,45 @@
                 <th>Nom</th>
                 <th>Image</th>
                 <th>Date de Réstitution</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for livre in livres %}
-            <tr>
-                <td>{{ livre.Id }}</td>
-                <td>{{ livre.Nom }}</td>
-                <td>{{ livre.image }}</td>
-        <td>
-    {% set pretEnCours = pret[livre.id] ?? NULL %}
-    {% if pretEnCours %}
-        <!-- Si le livre est déjà réservé -->
-        <span>Livre déjà réservé, disponible à partir du {{ pretEnCours.dateFin|date('d/m/Y') }}</span>
-        
-        {% if pretEnCours.dateRendu is empty %}
-            <!-- Bouton pour marquer le livre comme rendu -->
-            <form action="{{ path('app_admin_livre_rendu', {'id': livre.id}) }}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-info">Rendu</button>
-            </form>
-        {% else %}
-            <span>Livre rendu le {{ pretEnCours.dateRendu|date('d/m/Y') }}</span>
-        {% endif %}
-    {% else %}
-        <!-- Si aucun prêt en cours pour ce livre -->
-        <!-- Pas de bouton "Réserver" ici -->
-    {% endif %}
-    <!-- Bouton pour voir les détails du livre -->
-    <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}" class="btn btn-primary">Voir</a>
-</td>
-
-                <td>
-                    <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}">show</a>
-                    <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">Modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre.id }}</td>
+                    <td>{{ livre.nom }}</td>
+                    <td>{{ livre.image }}</td>
+                    <td>
+                        {% set pretEnCours = pret[livre.id] ?? NULL %}
+                        {% if pretEnCours %}
+                       
+                            {% if pretEnCours.dateFin|date('d/m/Y') < "now"|date("d/m/Y")  and pretEnCours.dateRendu is empty %}
+                                <!-- Surbrillance si en retard -->
+                                <span style="background-color: yellow;">{{ pretEnCours.dateFin|date('d/m/Y') }}</span>
+                            {% else %}
+                                {{ pretEnCours.dateFin|date('d/m/Y') }}
+                            {% endif %}
+                        {% else %}
+                            - <!-- Si aucun prêt en cours pour ce livre -->
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pretEnCours %}
+                            <!-- Bouton pour marquer le livre comme rendu -->
+                            <form action="{{ path('app_admin_livre_rendu', {'id': livre.id}) }}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-info">Rendu</button>
+                            </form>
+                        {% endif %}
+                        <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}">Voir</a>
+                        <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                        {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_livre_new') }}">Ajouter un nouveau livre </a>
+    <a href="{{ path('app_admin_livre_new') }}">Ajouter un nouveau livre</a>
 {% endblock %}
+
