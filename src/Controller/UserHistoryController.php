@@ -36,7 +36,7 @@ class UserHistoryController extends AbstractController
         ]);
     }
 
-    #[Route('/user/history/extension/{id}', name: 'app_user_history_extension', methods: ['GET'])]
+    #[Route('/user/history/extension/{id}', name: 'extension', methods: ['GET'])]
 public function extension(PretsRepository $pret, $id, ManagerRegistry $doctrine): Response
 {
     $pret = $pret->find($id);
