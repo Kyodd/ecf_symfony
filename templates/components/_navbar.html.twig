@@ -15,7 +15,7 @@
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#"></a>
 				</li>
-
+	{% if app.user %}
 
 					{% if 'ROLE_ADMIN' in app.user.roles %}
 				<li class="nav-item">
@@ -30,7 +30,7 @@
 					<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Gestion des Prêts{% endtrans %}</a>
 				</li>
-
+  {% endif %}
 {% else %}
 
 	<li class="nav-item">
