@@ -30,6 +30,21 @@
 					<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Gestion des Prêts{% endtrans %}</a>
 				</li>
+				{% else %}
+
+	<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_livre') }}">{% trans %}Nos livres{% endtrans %}</a>
+				</li>
+ 	              <li class="nav-item">
+					<a class="nav-link" href="{{ path('app_salle') }}">{% trans %}Nos salles{% endtrans %}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_subscription') }}">{% trans %}Nos abonnements{% endtrans %}</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_user_history') }}"> {% trans %} Mes réservations {% endtrans %}</a>
+				</li>
+				
   {% endif %}
 {% else %}
 
@@ -45,6 +60,7 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_user_history') }}"> {% trans %} Mes réservations {% endtrans %}</a>
 				</li>
+				
   {% endif %}
 			</ul>
 			<ul class='navbar-nav ms-auto mb-2 mb-lg-0'>
