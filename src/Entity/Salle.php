@@ -32,9 +32,9 @@ class Salle
     private Collection $reservations;
 
     /**
-     * @var Collection<int, equipement>
+     * @var Collection<int, Equipement>
      */
-    #[ORM\ManyToMany(targetEntity: equipement::class, inversedBy: 'salles')]
+    #[ORM\ManyToMany(targetEntity: Equipement::class, inversedBy: 'salles')]
     private Collection $equipement;
 
     public function __construct()
@@ -103,14 +103,14 @@ class Salle
     }
 
     /**
-     * @return Collection<int, equipement>
+     * @return Collection<int, Equipement>
      */
     public function getEquipement(): Collection
     {
         return $this->equipement;
     }
 
-    public function addEquipement(equipement $equipement): static
+    public function addEquipement(Equipement $equipement): static
     {
         if (!$this->equipement->contains($equipement)) {
             $this->equipement->add($equipement);
@@ -119,7 +119,7 @@ class Salle
         return $this;
     }
 
-    public function removeEquipement(equipement $equipement): static
+    public function removeEquipement(Equipement $equipement): static
     {
         $this->equipement->removeElement($equipement);
 
