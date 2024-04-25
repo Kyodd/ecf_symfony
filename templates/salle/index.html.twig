@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SalleController!{% endblock %}
+{% block title %}Nos Salles {% endblock %}
 
 {% block body %}
 <style>
@@ -21,7 +21,9 @@
                                     {% for equip in salle.equipement %}
                                      {{  equip.getNom()  }} 
                                 {% endfor %}
+                                {% if app.user %}
                                   <a href="{{ path('app_salle_reservation', { id:salle.id }) }}">{% trans %}Voir les créneaux{% endtrans %}</a>
+                                    {% endif %}
                                 </p>
 
                                 </div>

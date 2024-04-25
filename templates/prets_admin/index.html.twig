@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prets index{% endblock %}
+
+{% block body %}
+    <h1>Prets index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateFin</th>
+                <th>DateDebut</th>
+                <th>DateRendu</th>
+                <th>Extension</th>
+                <th>actions</th>
+                <th>commentaire</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for pret in prets %}
+            <tr>
+                <td>{{ pret.id }}</td>
+                <td>{{ pret.dateFin ? pret.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pret.dateDebut ? pret.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pret.dateRendu ? pret.dateRendu|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pret.extension ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_prets_admin_show', {'id': pret.id}) }}">show</a>
+                    <a href="{{ path('app_prets_admin_edit', {'id': pret.id}) }}">edit</a>
+                </td>
+                <th>Commentaire</th>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prets_admin_new') }}">Create new</a>
+{% endblock %}

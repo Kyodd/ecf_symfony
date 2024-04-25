@@ -24,12 +24,13 @@ class LivreRepository extends ServiceEntityRepository
      * @param Livre $livre
      * @return array
      */
-    public function findPretsByLivre(Livre $livre): array
+    public function findLivresEnRetard(): array
     {
         return $this->createQueryBuilder('l')
             ->join('l.prets', 'p')
-            ->where('l.id = :livreId')
-            ->setParameter('livreId', $livre->getId())
+            ->andWhere('p.dateFin < :dateCourante')
+            ->andWhere('p.dateRendu IS NULL')
+            ->setParameter('dateCourante', new \DateTime())
             ->getQuery()
             ->getResult();
     }
