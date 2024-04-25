@@ -50,23 +50,7 @@ class PretsAdminController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_prets_admin_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Prets $pret, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(PretsType::class, $pret);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_prets_admin_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('prets_admin/edit.html.twig', [
-            'pret' => $pret,
-            'form' => $form,
-        ]);
-    }
+   
 
     #[Route('/{id}', name: 'app_prets_admin_delete', methods: ['POST'])]
     public function delete(Request $request, Prets $pret, EntityManagerInterface $entityManager): Response
@@ -78,4 +62,16 @@ class PretsAdminController extends AbstractController
 
         return $this->redirectToRoute('app_prets_admin_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/comment', name: 'app_prets_admin_comment', methods: ['POST'])]
+public function comment(Request $request, Prets $pret, EntityManagerInterface $entityManager): Response
+{
+    $commentaire = $request->request->get('commentaire');
+    $pret->setCommentaire($commentaire);
+    
+    $entityManager->persist($pret);
+    $entityManager->flush();
+
+    // Rediriger vers la page de détails du prêt
+    return $this->redirectToRoute('app_prets_admin_show', ['id' => $pret->getId()]);
+}
 }

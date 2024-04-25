@@ -26,6 +26,20 @@ class LivreType extends AbstractType
                 'class' => Etat::class,
                 'choice_label' => 'id',
             ])
+            
+            // >add('imageFile', VichImageType::class, [
+
+            //     'required' => false,
+
+            //     'allow_delete' => true,
+
+            //     'download_uri' => false,
+
+            //     'image_uri' => true,
+
+            //     'imagine_pattern' => 'my_thumb',
+
+            //     'asset_helper' => true,])
         ;
     }
 

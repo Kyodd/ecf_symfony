@@ -23,6 +23,11 @@ class Livre
 
     #[ORM\Column(length: 255)]
     // #[Assert\NotBlank(message:'Le titre ne peut pas être vide.') ]
+
+
+
+
+    
     private ?string $Nom = null;
 
     #[ORM\Column(length: 255)]
