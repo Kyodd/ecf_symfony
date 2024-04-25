@@ -261,6 +261,14 @@
         <source>La Librairie Candide | Depuis 1545</source>
         <target>Librairie Candide | Since 1545</target>
       </trans-unit>
+      <trans-unit id="maE5sT0" resname="Librairie Candide">
+        <source>Librairie Candide</source>
+        <target>__Librairie Candide</target>
+      </trans-unit>
+      <trans-unit id="a7JnNCz" resname="Mes réservations">
+        <source>Mes réservations</source>
+        <target>My bookings</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

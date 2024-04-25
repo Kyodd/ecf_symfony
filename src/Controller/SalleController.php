@@ -21,182 +21,184 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SalleController extends AbstractController
 {
     #[Route('/salle', name: 'app_salle')]
-    public function index(SalleRepository  $salleRepo, EquipementRepository $equiRepo ): Response
+    public function index(SalleRepository $salleRepo, EquipementRepository $equiRepo): Response
     {
 
-      
-            $salles = $salleRepo ->findAll();
-            $equip = $equiRepo ->findAll();
-            
-            return $this->render('salle/index.html.twig', [
-                'salles' => $salles,
-            ]);
-        
-        
-       
+
+        $salles = $salleRepo->findAll();
+        $equip = $equiRepo->findAll();
+
+        return $this->render('salle/index.html.twig', [
+            'salles' => $salles,
+        ]);
+
+
+
     }
 
-    #[ROUTE('/salle/{id}', name:'app_salle_reservation', methods: ['GET','POST'])]
-    public function reservation($id,ReservationRepository $calendar,Request $request, TranslatorInterface $translator, SalleRepository $salle): Response
-    {    
+    #[ROUTE('/salle/{id}', name: 'app_salle_reservation', methods: ['GET', 'POST'])]
+    public function reservation($id, ReservationRepository $calendar, Request $request, TranslatorInterface $translator, SalleRepository $salle): Response
+    {
         if ($this->isGranted('ROLE_USER')) {
             $events = $calendar->findAll();
             $rdvs = [];
-            $salleCourante="Salle";
-            foreach($events as $event){
-             
-            if($event->getUser()->getId()==$this->getUser()->getId()){
-                $colorBg  = 'blue';
-                $message1 = $translator->trans('Votre réservation');
-                $title  = $message1;
-            }else{
-                $colorBg  = 'red';
-                $message2 = $translator->trans('Indisponible');
-                $title  = $message2;
-            }
-                if($event->getSalle()->getId() ==$id ){
-                    $salleCourante=$event->getSalle()->getNom();
+            $salleCourante = "Salle";
+            foreach ($events as $event) {
+
+                if ($event->getUser()->getId() == $this->getUser()->getId()) {
+                    $colorBg = 'blue';
+                    $message1 = $translator->trans('Votre réservation');
+                    $title = $message1;
+                } else {
+                    $colorBg = 'red';
+                    $message2 = $translator->trans('Indisponible');
+                    $title = $message2;
+                }
+                if ($event->getSalle()->getId() == $id) {
+                    $salleCourante = $event->getSalle()->getNom();
                     $rdvs[] = [
                         'id' => $event->getId(),
-                        'idSalle'=>$id,
-                        'title'=>$title,
+                        'idSalle' => $id,
+                        'title' => $title,
                         'start' => $event->getDateDebut()->format('Y-m-d H:i:s'),
-                        'end' => $event->getDateFin()->format('Y-m-d H:i:s'),                   
-                        'backgroundColor' =>  $colorBg,
+                        'end' => $event->getDateFin()->format('Y-m-d H:i:s'),
+                        'backgroundColor' => $colorBg,
                         'borderColor' => $colorBg,
                         'textColor' => $event->getTextColor(),
-                      
+
                     ];
                 }
-            } 
-    
+            }
+
             $data = json_encode($rdvs);
 
             $message3 = $translator->trans('Voulez-vous réserver ce créneau ?');
-            $confirmMsg  = $message3;
+            $confirmMsg = $message3;
 
             $message4 = $translator->trans("Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités (maximum possible dans l\'absolu : 4h )?");
-            $chooseHourSlot  = $message4;
+            $chooseHourSlot = $message4;
 
             $message5 = $translator->trans('Veuillez choisir un créneau de moins de 4h');
-            $errorHours  = $message5;
-          
-           
-            return $this->render('salle/reservation.html.twig', 
-            [
-                'data' => $data,
-                'id'=> $id,
-                'confirmMsg'=>$confirmMsg,
-                'chooseHourSlot'=> $chooseHourSlot ,
-                'errorHours'=>$errorHours,
-                'nomSalleCourante'=>$salleCourante,
+            $errorHours = $message5;
 
 
-            ]
+            return $this->render(
+                'salle/reservation.html.twig',
+                [
+                    'data' => $data,
+                    'id' => $id,
+                    'confirmMsg' => $confirmMsg,
+                    'chooseHourSlot' => $chooseHourSlot,
+                    'errorHours' => $errorHours,
+                    'nomSalleCourante' => $salleCourante,
+
+
+                ]
             );
-        }else {
+        } else {
             return $this->redirectToRoute('app_home');
         }
-       
+
     }
 
-    #[ROUTE('/save-event/{id}', name:'save_event',methods: ['POST'])]
-    public function saveEvent($id,ReservationRepository $calendar,Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle, TranslatorInterface $translator): Response
-    {    
+    #[ROUTE('/save-event/{id}', name: 'save_event', methods: ['POST'])]
+    public function saveEvent($id, ReservationRepository $calendar, Request $request, EntityManagerInterface $entityManager, Security $security, UserRepository $user, SalleRepository $salle, TranslatorInterface $translator): Response
+    {
 
         $reservations = $calendar->findAll();
         $eventData = $request->request->get('event-data');
         $event = json_decode($eventData, true);
-        $dateAdd= new \DateTime($event['end']);
-            $dateAdd=$dateAdd->format('d/m/Y');
-            $salleId = $id;
-             $salle = $salle->find($salleId); 
-             $error= false; 
-        foreach($reservations as $reservation){
+        $dateAdd = new \DateTime($event['end']);
+        $dateAdd = $dateAdd->format('d/m/Y');
+        $salleId = $id;
+        $salle = $salle->find($salleId);
+        $error = false;
+        foreach ($reservations as $reservation) {
 
-            $dateCurr=$reservation->getDateDebut()->format('d/m/Y');
-        
+            $dateCurr = $reservation->getDateDebut()->format('d/m/Y');
 
-            if($reservation->getSalle()->getId() ==$id ){
-   if(new \DateTime($event['end'])>$reservation->getDateDebut() && new \DateTime($event['start'])<$reservation->getDateDebut() && $dateAdd==$dateCurr){
- 
-        $error= true;
 
-        $date=new \DateTime($event['start']);
-        $date=$date->format('H');
-        $dateReservation=$reservation->getDateDebut()->format('H');
-        $dateInt=intval($date);
-        $dateReservationInt=intval($dateReservation);
-        $gapHeure=$dateReservationInt - $dateInt;
-        $rdvs[] = [
-            'gapHeure' => $gapHeure,
-         
-        ];
-   
-   }
-   
-}
+            if ($reservation->getSalle()->getId() == $id) {
+                if (new \DateTime($event['end']) > $reservation->getDateDebut() && new \DateTime($event['start']) < $reservation->getDateDebut() && $dateAdd == $dateCurr) {
 
-        }
+                    $error = true;
 
-        
-        if($error){
-            
-        $gpH=$rdvs[0]['gapHeure'];
-        foreach($rdvs as  $index =>$rdv){
-           
-            $num=count($rdvs);
-          
-            if($num>$index+1){
-             
-                if($rdv['gapHeure']>$rdvs[$index+1]['gapHeure'] ){
-                    $gpH==$rdvs[$index+1]['gapHeure'];
+                    $date = new \DateTime($event['start']);
+                    $date = $date->format('H');
+                    $dateReservation = $reservation->getDateDebut()->format('H');
+                    $dateInt = intval($date);
+                    $dateReservationInt = intval($dateReservation);
+                    $gapHeure = $dateReservationInt - $dateInt;
+                    $rdvs[] = [
+                        'gapHeure' => $gapHeure,
+
+                    ];
+
                 }
+
             }
-           
-       
+
         }
-        $message = $translator->trans('Veuillez réserver un créneau en fonction des disponibilités. Heures disponibles pour ce créneau : ');
-        $error = $message;
-            return $this->render('salle/error.html.twig', 
-            [
-                'id' => $id,
-                'gapHeure'=>  $gpH,
-                'error'=>$error
-            ]
+
+
+        if ($error) {
+
+            $gpH = $rdvs[0]['gapHeure'];
+            foreach ($rdvs as $index => $rdv) {
+
+                $num = count($rdvs);
+
+                if ($num > $index + 1) {
+
+                    if ($rdv['gapHeure'] > $rdvs[$index + 1]['gapHeure']) {
+                        $gpH == $rdvs[$index + 1]['gapHeure'];
+                    }
+                }
+
+
+            }
+            $message = $translator->trans('Veuillez réserver un créneau en fonction des disponibilités. Heures disponibles pour ce créneau : ');
+            $error = $message;
+            return $this->render(
+                'salle/error.html.twig',
+                [
+                    'id' => $id,
+                    'gapHeure' => $gpH,
+                    'error' => $error
+                ]
             );
-            
-         
-        }else{
+
+
+        } else {
             $user = $this->getUser();
             $reservation = new Reservation();
             $reservation->setUser($user);
-            $reservation->setSalle($salle );
+            $reservation->setSalle($salle);
             $reservation->setDateDebut(new \DateTime($event['start']));
             $reservation->setDateFin(new \DateTime($event['end']));
-           
+
             $reservation->setBackgroundColor('red');
             $reservation->setBorderColor('red');
             $reservation->setTextColor('white');
-               $entityManager->persist($reservation);
-             $entityManager->flush();
-           
-            return $this->redirectToRoute('app_salle_reservation',['id' => $salle->getId()]);
-        }
-       
-       
-       
-        
-    }
-    #[ROUTE('/salle/error/{id}', name:'app_salle_error_reservation', methods: ['GET'])]
-public function error($id,ReservationRepository $calendar,Request $request, SalleRepository $salle): Response
-{    
+            $entityManager->persist($reservation);
+            $entityManager->flush();
 
-  
-    return $this->render('salle/error.html.twig', [
-        'id' => $id,
-      
-    ]);
-    // return $this->redirectToRoute('app_salle_reservation',['id' =>$id ]);
-}
+            return $this->redirectToRoute('app_salle_reservation', ['id' => $salle->getId()]);
+        }
+
+
+
+
+    }
+    #[ROUTE('/salle/error/{id}', name: 'app_salle_error_reservation', methods: ['GET'])]
+    public function error($id, ReservationRepository $calendar, Request $request, SalleRepository $salle): Response
+    {
+
+
+        return $this->render('salle/error.html.twig', [
+            'id' => $id,
+
+        ]);
+        // return $this->redirectToRoute('app_salle_reservation',['id' =>$id ]);
+    }
 }

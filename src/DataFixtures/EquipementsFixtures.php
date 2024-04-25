@@ -21,18 +21,14 @@ class EquipementsFixtures extends Fixture implements DependentFixtureInterface
 
         $equipements =["Wi-Fi","Projecteur", "Tableau", "Prises électriques", "Télévision", "Climatisation"];
         $equips=[];
-        // Créer 4 livres factices
+    
         foreach ($equipements as $nom) {
             $equipement = new Equipement();
             $equipement->setNom($nom);
             $manager->persist($equipement);
             $equips[]= $equipement;
         }
-        
-        // $product = new Product();
-        // $manager->persist($product);
-        // $equips = [];
-       
+             
         $salles = $this->salleRepo->findAll();
     
         foreach($salles as $salle){
