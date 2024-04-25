@@ -20,7 +20,11 @@
 
 						<div class="d-flex justify-content-center align-items-center gap-3">
 							<a href="{{path ("app_livre_show", {"id":p.getLivre().getId() } ) }}" class="btn btn-primary ">Voir détails</a>
-							<a href="#" class="btn btn-danger ">Rendre le livre</a>
+ 							 
+							<form method="get" action="{{path ("app_user_history_extension", {"id":p.id } ) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir prolonger ce prêt?');">
+    							<button type="submit" class="btn btn-success">Prolonger le prêt</button>
+							</form>
+
 						</div>
 					</div>
 				</div>
