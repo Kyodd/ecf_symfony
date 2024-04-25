@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prets{% endblock %}
+{% block title %}Détails du prêt{% endblock %}
 
 {% block body %}
-    <h1>Prets</h1>
+    <h1>Détails du prêt</h1>
 
     <table class="table">
         <tbody>
@@ -25,14 +25,24 @@
             </tr>
             <tr>
                 <th>Extension</th>
-                <td>{{ pret.extension ? 'Yes' : 'No' }}</td>
+                <td>{{ pret.extension ? 'Oui' : 'Non' }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>
+                    {% if pret.commentaire %}
+                        {{ pret.commentaire }}
+                    {% else %}
+                    <form method="post" action="{{ path('app_prets_admin_comment', {'id': pret.id}) }}">
+                        <textarea name="commentaire" placeholder="Ajouter un commentaire"></textarea>
+                        <button type="submit">Enregistrer</button>
+                    </form>
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_prets_admin_index') }}">back to list</a>
-
-    <a href="{{ path('app_prets_admin_edit', {'id': pret.id}) }}">edit</a>
-
-    {{ include('prets_admin/_delete_form.html.twig') }}
+    <a href="{{ path('app_prets_admin_index') }}"class="btn btn-warning">Retour à la liste</a>
+    
 {% endblock %}
