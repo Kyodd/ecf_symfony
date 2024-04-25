@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} HomeController!{% endblock %}
+{% block title %} La Librairie Candide {% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%;   }
+    .titleHome{
+ margin-bottom: 20px;
+    }
+    
 </style>
 
 <div class="example-wrapper">
-    <h1>{% trans %}Salut{% endtrans %}{{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/wamp64/www/ecf-symf/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/wamp64/www/ecf-symf/templates/home/index.html.twig</code></li>
-    </ul>
+    <h1 class="titleHome">{% trans %} La Librairie Candide | Depuis 1545 {% endtrans %}</h1>
+<img class="image" src="{{asset('img/library.jpg')}}" >
 </div>
 {% endblock %}

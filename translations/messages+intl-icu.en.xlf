@@ -149,6 +149,118 @@
         <source>Veuillez choisir un créneau de moins de 4h</source>
         <target>Please select a time slot of less than 4 hours</target>
       </trans-unit>
+      <trans-unit id="z7GsDIB" resname="Inscription">
+        <source>Inscription</source>
+        <target>Registration</target>
+      </trans-unit>
+      <trans-unit id="AngtRBP" resname="Mon identité">
+        <source>Mon identité</source>
+        <target>My identity</target>
+      </trans-unit>
+      <trans-unit id="VfthsCB" resname="Mes coordonnées">
+        <source>Mes coordonnées</source>
+        <target>My contact details</target>
+      </trans-unit>
+      <trans-unit id="g__8ozm" resname="Mon mot de passe">
+        <source>Mon mot de passe</source>
+        <target>My password</target>
+      </trans-unit>
+      <trans-unit id="sBFnVlo" resname="Vous êtes connecté en tant que">
+        <source>Vous êtes connecté en tant que</source>
+        <target>You are logged in as</target>
+      </trans-unit>
+      <trans-unit id="_1_eksG" resname="Déconnexion">
+        <source>Déconnexion</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="kljm8Fx" resname="Connectez-vous">
+        <source>Connectez-vous</source>
+        <target>Log on </target>
+      </trans-unit>
+      <trans-unit id=".5yLjAZ" resname="Mot de passe">
+        <source>Mot de passe</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="xUkbiWT" resname="Se rappeler de moi">
+        <source>Se rappeler de moi</source>
+        <target>Remember me</target>
+      </trans-unit>
+      <trans-unit id="4yW.j5A" resname="Prénom">
+        <source>Prénom</source>
+        <target>First name</target>
+      </trans-unit>
+      <trans-unit id="Rkn0tV4" resname="Date de naissance">
+        <source>Date de naissance</source>
+        <target>Birthdate</target>
+      </trans-unit>
+      <trans-unit id="eeXPIN4" resname="Adresse">
+        <source>Adresse</source>
+        <target>Adress</target>
+      </trans-unit>
+      <trans-unit id="Dr0lo0H" resname="Ville">
+        <source>Ville</source>
+        <target>City</target>
+      </trans-unit>
+      <trans-unit id="vnBxYSs" resname="Code postal">
+        <source>Code postal</source>
+        <target>Postal code</target>
+      </trans-unit>
+      <trans-unit id="NvDqjbl" resname="Numéro de téléphone">
+        <source>Numéro de téléphone</source>
+        <target>Phone number</target>
+      </trans-unit>
+      <trans-unit id="SQlNO6e" resname="Confirmer le mot de passe">
+        <source>Confirmer le mot de passe</source>
+        <target>Confirm password</target>
+      </trans-unit>
+      <trans-unit id="8dbCh1s" resname="Accepter les conditions générales">
+        <source>Accepter les conditions générales</source>
+        <target>Accept terms and conditions</target>
+      </trans-unit>
+      <trans-unit id="YdaVBBA" resname="Connexion">
+        <source>Connexion</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="P8P988d" resname="Gestion des Prêts">
+        <source>Gestion des Prêts</source>
+        <target>Loan Management</target>
+      </trans-unit>
+      <trans-unit id="Xl0CFs4" resname="Supprimer">
+        <source>Supprimer</source>
+        <target>Delete</target>
+      </trans-unit>
+      <trans-unit id="hX.RLYw" resname="Autre langage?">
+        <source>Autre langage?</source>
+        <target>Another language?</target>
+      </trans-unit>
+      <trans-unit id="AH_.PA5" resname="Réservation">
+        <source>Réservation</source>
+        <target>Reservation</target>
+      </trans-unit>
+      <trans-unit id="VlM5vE0" resname="OK">
+        <source>OK</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="cR5fLhm" resname="Fermer">
+        <source>Fermer</source>
+        <target>Close</target>
+      </trans-unit>
+      <trans-unit id="CpBAdjn" resname="Oui">
+        <source>Oui</source>
+        <target>Yes</target>
+      </trans-unit>
+      <trans-unit id="yr42vGI" resname="Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités (maximum possible dans l'absolu : 4h)?">
+        <source>Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités (maximum possible dans l'absolu : 4h)?</source>
+        <target>Please choose the number of hours of your booking according to availability (absolute maximum possible: 4h)?</target>
+      </trans-unit>
+      <trans-unit id="sLkFn5t" resname="Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités (maximum possible dans l\'absolu : 4h )?">
+        <source>Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités (maximum possible dans l\'absolu : 4h )?</source>
+        <target>__Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités (maximum possible dans l\'absolu : 4h )?</target>
+      </trans-unit>
+      <trans-unit id="EmXNw.K" resname="La Librairie Candide | Depuis 1545">
+        <source>La Librairie Candide | Depuis 1545</source>
+        <target>Librairie Candide | Since 1545</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

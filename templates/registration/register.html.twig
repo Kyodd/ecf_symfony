@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription
+{% block title %}{% trans %}Inscription{% endtrans %}
 {% endblock %}
 
 {% block body %}
-    <h1 class='text-center'>Inscription</h1>
+    <h1 class='text-center'>{% trans %}Inscription{% endtrans %}</h1>
     <section class="container">
         <div class="row">
             <div class="col">
@@ -12,7 +12,7 @@
                 {{ form_errors(registrationForm) }}
 
                 <fieldset class="mb-3">
-                    <legend>Mon identité</legend>
+                    <legend>{% trans %}Mon identité{% endtrans %}</legend>
                     {{ form_row(registrationForm.prenom) }}
                     {{ form_row(registrationForm.nom) }}
                     {{ form_row(registrationForm.birthdate) }}
@@ -20,7 +20,7 @@
                 </fieldset>
 
                 <fieldset class="mb-3">
-                    <legend>Mes coordonnées</legend>
+                    <legend>{% trans %}Mes coordonnées{% endtrans %}</legend>
                     {{ form_row(registrationForm.adresse) }}
                     {{ form_row(registrationForm.ville) }}
                     {{ form_row(registrationForm.codepostal) }}
@@ -28,14 +28,14 @@
                 </fieldset>
 
                 <fieldset class="mb-3">
-                    <legend>Mon mot de passe</legend>
+                    <legend>{% trans %}Mon mot de passe{% endtrans %}</legend>
                     {{ form_row(registrationForm.password) }}
                 </fieldset>
 
                 {{ form_row(registrationForm.agreeTerms) }}
 
-                <button type="submit" class="btn btn-primary btn-lg my-3">M'inscrire</button>
-                <a href="{{ path('app_login')}}" class='btn btn-secondary btn-lg'>Me connecter</a>
+                <button type="submit" class="btn btn-primary btn-lg my-3">{% trans %}M'inscrire{% endtrans %}</button>
+                <a href="{{ path('app_login')}}" class='btn btn-secondary btn-lg'>{% trans %}Me connecter{% endtrans %}</a>
                 {{ form_end(registrationForm) }}
 
 

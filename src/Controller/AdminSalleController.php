@@ -91,7 +91,8 @@ class AdminSalleController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_salle_index', [], Response::HTTP_SEE_OTHER);}
+        return $this->redirectToRoute('app_admin_salle_index', [], Response::HTTP_SEE_OTHER);
+    }
         else{
             return $this->redirectToRoute('app_home');
         }

@@ -6,16 +6,60 @@
 {% block body %}
     <form id="event-form" method="post" action="{{ path('app_salle_reservation',{ id:id }) }}">
     <input type="hidden" id="event-data" name="event-data" value="">
-
+<!-- Modal error -->
+<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans %}Réservation{% endtrans %} </h5>
+        <button type="button" id="close3" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>   {{error}} {{gapHeure}}h  </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="ouiBtn3" class="btn btn-primary">{% trans %}OK{% endtrans %} </button>
+        <button type="button" id="closeBtn3" class="btn btn-secondary" data-dismiss="modal">{% trans %}Fermer{% endtrans %} </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% block javascripts %}
 <script>
 
-alert(`{{error}}`+{{gapHeure}});
+
    var eventForm = document.getElementById('event-form');
     var eventDataInput = document.getElementById('event-data');
-    eventDataInput.value = JSON.stringify(event);
+       var d3 = document.getElementById('errorModal');
+          var close3 = document.getElementById('close3');
+     var closeBtn3 = document.getElementById('closeBtn3');
+        var ouiBtn3= document.getElementById('ouiBtn3');
+
+
+         d3.style.display = "block";
+    closeBtn3.addEventListener("click", () => {
+
+   eventDataInput.value = JSON.stringify(event);
     eventForm.submit(); 
+       d3.style.display = "none";
+   })
+       close3.addEventListener("click", () => {
+         eventDataInput.value = JSON.stringify(event);
+    eventForm.submit(); 
+
+       d3.style.display = "none";
+   })
+    ouiBtn3.addEventListener("click", () => {
+
+   eventDataInput.value = JSON.stringify(event);
+    eventForm.submit(); 
+
+    })
+
+ 
 </script>
 
 {% endblock %}

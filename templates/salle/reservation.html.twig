@@ -1,28 +1,106 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% trans %}Calendrier {% endtrans %}{% endblock %}
+{% block title %}{% trans %} Calendrier {% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <style>
         #calendrier{
+        
             width: 80%;
             margin: auto;
+            margin-top:30px;
         }
+        .title{
+          margin-top:30px;
+          text-align:center;
+        }
+
+       
     </style>
 {% endblock %}
 
 {% block body %}
-{{dump(data)}}
-    <div id="calendrier">
+
+<div class="container">
+
+      <h1 class='title'>{% trans %}Réservation{% endtrans %} {{nomSalleCourante}} </h1>
+      <div id="calendrier" >
+      </div>
+       <form id="event-form" method="post" action="{{ path('save_event',{ id:id }) }}">
+      <input type="hidden" id="event-data" name="event-data" value="">
+  </form>
+
+<!-- Modal Validation -->
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans %}Réservation{% endtrans %} </h5>
+        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{confirmMsg}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="ouiBtn" class="btn btn-primary">{% trans %}Oui{% endtrans %} </button>
+        <button type="button" id="closeBtn" class="btn btn-secondary fermer" data-dismiss="modal">{% trans %}Fermer{% endtrans %} </button>
+      </div>
     </div>
-     <form id="event-form" method="post" action="{{ path('save_event',{ id:id }) }}">
-    <input type="hidden" id="event-data" name="event-data" value="">
+  </div>
+</div>
 
- 
+<!-- Modal Choisir heure -->
+<div class="modal" id="heureModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans %}Réservation{% endtrans %} </h5>
+        <button type="button" id="close2" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+         <form>
+          <div class="form-group">
+            <label for="heure-name" class="col-form-label">{% trans %}Merci de choisir le nombre d'heure de votre réservation en fonction des disponibilités (maximum possible dans l'absolu : 4h)?{% endtrans %}</label>
+            <input type="text" class="heure-name" id="heure-name">
+          </div>       
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="ouiBtn2" class="btn btn-primary">{% trans %}Oui{% endtrans %} </button>
+        <button type="button" id="closeBtn2" class="btn btn-secondary" data-dismiss="modal">{% trans %}Fermer{% endtrans %} </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal error -->
+<div class="modal" id="errorModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans %}Réservation{% endtrans %} </h5>
+        <button type="button" id="close3" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>   {{errorHours}}    </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="ouiBtn3" class="btn btn-primary">{% trans %}OK{% endtrans %} </button>
+        <button type="button" id="closeBtn3" class="btn btn-secondary" data-dismiss="modal">{% trans %}Fermer{% endtrans %} </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>
-</div>
-</form>
 
 
 {% block javascripts %}
@@ -42,6 +120,7 @@
     slotDuration: '01:00:00' ,
     allDaySlot:false,
     height:'380px',
+
     headerToolbar: {
        start: 'prev,next today',
                 
@@ -56,20 +135,67 @@
   calendar.render();
    var eventForm = document.getElementById('event-form');
     var eventDataInput = document.getElementById('event-data');
- function addHours(date, hours) {
+    var heureName= document.getElementById('heure-name');
+       var d1 = document.getElementById('exampleModal');
+     var close = document.getElementById('close');
+     var closeBtn = document.getElementById('closeBtn');
+        var close2 = document.getElementById('close2');
+     var closeBtn2 = document.getElementById('closeBtn2');
+           var close3 = document.getElementById('close3');
+     var closeBtn3 = document.getElementById('closeBtn3');
+      var ouiBtn = document.getElementById('ouiBtn');
+          var ouiBtn2 = document.getElementById('ouiBtn2');
+            var ouiBtn3= document.getElementById('ouiBtn2');
+       var d2 = document.getElementById('heureModal');
+   var d3 = document.getElementById('errorModal');
+
+        function addHours(date, hours) {
            const hoursToAdd = hours * 60 * 60 * 1000;
            date.setTime(date.getTime() + hoursToAdd);
            return date;
          }
 
-    calendar.on('select', function(info) {
+     calendar.on('select', function(info,start,end) {
+
+    var today = new Date();
+    var tzoffset = today.getTimezoneOffset() * 60000;
+     var check=new Date(info.start ).toISOString().slice(0, -1);
+
+        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    today= today.toISOString().slice(0, -1);
+
+    if(check <= localISOTime)
+    {
+      console.log(check);
+      console.log('today'+ localISOTime);
      
-       if ( window.confirm(`{{confirmMsg}}`) ) {
-      var heure = prompt(`{{chooseHourSlot}}`);
-      if(heure>4){
-        alert(`{{errorHours}}`);
-        //supprimer les cases qui s'affiche quand on clique ok 
-      }else{
+    }
+    else
+    {
+
+      d1.style.display = "block";
+
+ouiBtn.addEventListener("click", () => {
+
+       d1.style.display = "none";
+       d2.style.display = "block";
+
+
+   ouiBtn2.addEventListener("click", () => {
+  var heure = heureName.value ;
+  if(heure>4){
+       d2.style.display = "none";
+       d3.style.display = "block";
+             closeBtn3.addEventListener("click", () => {
+
+       d3.style.display = "none";
+   })
+       close3.addEventListener("click", () => {
+
+       d3.style.display = "none";
+   })
+    
+      }else if(heure != null ){
           var dateFin = new Date(info.start.toISOString());
           dateFin= addHours(dateFin, heure);
           dateFin= dateFin.toISOString().substring(0, 24);
@@ -87,10 +213,36 @@
             eventForm.submit();
       }
        
-       }
+       })
+
+})
+        closeBtn.addEventListener("click", () => {
+
+       d1.style.display = "none";
+   })
+       close.addEventListener("click", () => {
+
+       d1.style.display = "none";
+   })
+       closeBtn2.addEventListener("click", () => {
+
+       d2.style.display = "none";
+   })
+       close2.addEventListener("click", () => {
+
+       d2.style.display = "none";
+   })
+ 
+     }
     });
 
 });
+
+
+
+
+
+
 
 </script>
 

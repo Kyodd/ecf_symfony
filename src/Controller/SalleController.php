@@ -24,18 +24,14 @@ class SalleController extends AbstractController
     public function index(SalleRepository  $salleRepo, EquipementRepository $equiRepo ): Response
     {
 
-        if (!$this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('app_home');
-        }else if($this->isGranted('ROLE_ADMIN')){
-            return $this->redirectToRoute('app_home');
-        }else{
+      
             $salles = $salleRepo ->findAll();
             $equip = $equiRepo ->findAll();
             
             return $this->render('salle/index.html.twig', [
                 'salles' => $salles,
             ]);
-        }
+        
         
        
     }
@@ -46,8 +42,7 @@ class SalleController extends AbstractController
         if ($this->isGranted('ROLE_USER')) {
             $events = $calendar->findAll();
             $rdvs = [];
-          
-          
+            $salleCourante="Salle";
             foreach($events as $event){
              
             if($event->getUser()->getId()==$this->getUser()->getId()){
@@ -60,6 +55,7 @@ class SalleController extends AbstractController
                 $title  = $message2;
             }
                 if($event->getSalle()->getId() ==$id ){
+                    $salleCourante=$event->getSalle()->getNom();
                     $rdvs[] = [
                         'id' => $event->getId(),
                         'idSalle'=>$id,
@@ -79,21 +75,21 @@ class SalleController extends AbstractController
             $message3 = $translator->trans('Voulez-vous réserver ce créneau ?');
             $confirmMsg  = $message3;
 
-            $message4 = $translator->trans('Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités ( maximum possible dans l\'absolu : 4h )?');
+            $message4 = $translator->trans("Merci de choisir le nombre d\'heure de votre réservation en fonction des disponibilités (maximum possible dans l\'absolu : 4h )?");
             $chooseHourSlot  = $message4;
 
             $message5 = $translator->trans('Veuillez choisir un créneau de moins de 4h');
             $errorHours  = $message5;
           
            
-          
             return $this->render('salle/reservation.html.twig', 
             [
                 'data' => $data,
                 'id'=> $id,
                 'confirmMsg'=>$confirmMsg,
                 'chooseHourSlot'=> $chooseHourSlot ,
-                'errorHours'=>$errorHours
+                'errorHours'=>$errorHours,
+                'nomSalleCourante'=>$salleCourante,
 
 
             ]
