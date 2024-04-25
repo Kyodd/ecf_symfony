@@ -79,7 +79,7 @@
 </div>
 
 
-<!-- Modal error -->
+<!-- Modal error + que 4 heures-->
 <div class="modal" id="errorModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -105,7 +105,7 @@
 
 {% block javascripts %}
 <script>
-
+//-----------   Gestion calendrier ---------------------------
  
     document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendrier');
@@ -133,35 +133,37 @@
   });
 
   calendar.render();
-   var eventForm = document.getElementById('event-form');
+
+  //-----------   Elements html à récupérer ---------------------------
+    var eventForm = document.getElementById('event-form');
     var eventDataInput = document.getElementById('event-data');
     var heureName= document.getElementById('heure-name');
-       var d1 = document.getElementById('exampleModal');
-     var close = document.getElementById('close');
-     var closeBtn = document.getElementById('closeBtn');
-        var close2 = document.getElementById('close2');
-     var closeBtn2 = document.getElementById('closeBtn2');
-           var close3 = document.getElementById('close3');
-     var closeBtn3 = document.getElementById('closeBtn3');
-      var ouiBtn = document.getElementById('ouiBtn');
-          var ouiBtn2 = document.getElementById('ouiBtn2');
-            var ouiBtn3= document.getElementById('ouiBtn2');
-       var d2 = document.getElementById('heureModal');
-   var d3 = document.getElementById('errorModal');
+    var d1 = document.getElementById('exampleModal');
+    var close = document.getElementById('close');
+    var closeBtn = document.getElementById('closeBtn');
+    var close2 = document.getElementById('close2');
+    var closeBtn2 = document.getElementById('closeBtn2');
+    var close3 = document.getElementById('close3');
+    var closeBtn3 = document.getElementById('closeBtn3');
+    var ouiBtn = document.getElementById('ouiBtn');
+    var ouiBtn2 = document.getElementById('ouiBtn2');
+    var ouiBtn3= document.getElementById('ouiBtn2');
+    var d2 = document.getElementById('heureModal');
+    var d3 = document.getElementById('errorModal');
 
         function addHours(date, hours) {
            const hoursToAdd = hours * 60 * 60 * 1000;
            date.setTime(date.getTime() + hoursToAdd);
            return date;
          }
-
+//-----------   Gestion des réservation au niveau du calendrier ---------------------------
      calendar.on('select', function(info,start,end) {
 
     var today = new Date();
     var tzoffset = today.getTimezoneOffset() * 60000;
-     var check=new Date(info.start ).toISOString().slice(0, -1);
+    var check=new Date(info.start ).toISOString().slice(0, -1);
 
-        var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
     today= today.toISOString().slice(0, -1);
 
     if(check <= localISOTime)
@@ -175,15 +177,15 @@
 
       d1.style.display = "block";
 
-ouiBtn.addEventListener("click", () => {
+    ouiBtn.addEventListener("click", () => {
 
        d1.style.display = "none";
        d2.style.display = "block";
 
 
    ouiBtn2.addEventListener("click", () => {
-  var heure = heureName.value ;
-  if(heure>4){
+   var heure = heureName.value ;
+   if(heure>4){
        d2.style.display = "none";
        d3.style.display = "block";
              closeBtn3.addEventListener("click", () => {
@@ -195,7 +197,7 @@ ouiBtn.addEventListener("click", () => {
        d3.style.display = "none";
    })
     
-      }else if(heure != null ){
+ }else if(heure != null ){
           var dateFin = new Date(info.start.toISOString());
           dateFin= addHours(dateFin, heure);
           dateFin= dateFin.toISOString().substring(0, 24);
@@ -216,6 +218,7 @@ ouiBtn.addEventListener("click", () => {
        })
 
 })
+//-----------   Boutons Fermer ---------------------------
         closeBtn.addEventListener("click", () => {
 
        d1.style.display = "none";

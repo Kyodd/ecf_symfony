@@ -41,14 +41,16 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if pretEnCours %}
-                            <!-- Bouton pour marquer le livre comme rendu -->
-                            <form action="{{ path('app_admin_livre_rendu', {'id': livre.id}) }}" method="post" style="display: inline;">
-                                <button type="submit" class="btn btn-info">Rendu</button>
-                            </form>
-                        {% endif %}
-                        <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}"class="btn btn-primary">Voir</a>
-                        <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}"class="btn btn-success">Modifier</a>
+                        <div class="btn">
+                            {% if pretEnCours %}
+                                <!-- Bouton pour marquer le livre comme rendu -->
+                                <form action="{{ path('app_admin_livre_rendu', {'id': livre.id}) }}" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-info">Rendu</button>
+                                </form>
+                            {% endif %}
+                            <a href="{{ path('app_admin_livre_show', {'id': livre.id}) }}"class="btn btn-primary">Voir</a>
+                            <a href="{{ path('app_admin_livre_edit', {'id': livre.id}) }}"class="btn btn-success">Modifier</a>
+                        </div>
                     </td>
                 </tr>
             {% else %}

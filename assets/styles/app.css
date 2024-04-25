@@ -5,4 +5,5 @@ body {
 .btn{
     display:flex;
     width:fit-content;
+    gap:10px
 }

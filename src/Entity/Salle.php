@@ -12,13 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
 {
- 
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255,nullable:true, unique:true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
     #[Assert\NotBlank(message: 'le nom de la salle ne peut pas être vide.')]
     private ?string $nom = null;
 
@@ -126,5 +126,5 @@ class Salle
         return $this;
     }
 
-    
+
 }
